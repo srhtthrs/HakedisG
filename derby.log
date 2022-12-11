@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Dec 12 00:08:08 TRT 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0185-0304-41d8-00000f23a098 
+on database directory C:\_serhat_03_10_2021\Belgelerim\NKU\JavaProjects\HakEdis1.0\personeltaseron with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@7a4f0f29 
+Loaded from file:/C:/_serhat_03_10_2021/Belgelerim/NKU/JavaProjects/HakEdis1.0/DataBase/derby.jar
+java.vendor=Eclipse Adoptium
+java.runtime.version=17.0.3+7
+user.dir=C:\_serhat_03_10_2021\Belgelerim\NKU\JavaProjects\HakEdis1.0
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
