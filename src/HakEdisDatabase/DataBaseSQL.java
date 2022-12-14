@@ -134,6 +134,30 @@ public class DataBaseSQL {
 		return sicil;	
 	}
 	
+	public static TaseronPersonelDomain personelBul(String sicil) {
+		
+		TaseronPersonelDomain bulunanPersonelBilgileri= new TaseronPersonelDomain();
+		Connection baglanti = DataBaseConn.baglantiAl();
+		try {									
+			PreparedStatement sorgu2 =baglanti.prepareStatement("SELECT * FROM taseronpersonel WHERE sicil=?");
+			sorgu2.setString(1, sicil);			
+			ResultSet rs2=sorgu2.executeQuery();			
+		while(rs2.next()) {	
+				
+			bulunanPersonelBilgileri.setId(rs2.getInt("id"));
+			bulunanPersonelBilgileri.setSicil(rs2.getString("sicil"));
+			bulunanPersonelBilgileri.setAdiSoyadi(rs2.getString("adisoyadi"));
+			bulunanPersonelBilgileri.setMudurluk(rs2.getString("mudurluk"));
+			bulunanPersonelBilgileri.setUnvan(rs2.getString("unvan"));
+										
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return bulunanPersonelBilgileri;
+	}
 
 
 	

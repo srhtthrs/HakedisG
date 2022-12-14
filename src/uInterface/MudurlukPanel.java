@@ -38,6 +38,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.toedter.calendar.JDateChooser;
 
+import HakEdisDatabase.DataBaseConn;
 import HakEdisDatabase.DataBaseSQL;
 
 import HakEdisDomain.TaseronPersonelDomain;
@@ -2053,9 +2054,15 @@ public class MudurlukPanel extends JFrame {
 			comboBoxSicil.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {	
 					
+					String sicil=comboBoxSicil.getSelectedItem().toString();					
+								
+					TaseronPersonelDomain bulunanPersonel=DataBaseSQL.personelBul(sicil);					
+					String adiSoyadi= bulunanPersonel.getAdiSoyadi().toString();
+					String unvan= bulunanPersonel.getUnvan().toString();
 					
-	
-												
+					labelUnvan.setText(unvan);
+					labelIsim.setText(adiSoyadi);
+															
 					labelTarihYaz.setText(labelIsim.getText().toString()+"-"+secilenTarihYilAl+"-"+secilenTarihAyAl+".ay");
 				}
 			});
