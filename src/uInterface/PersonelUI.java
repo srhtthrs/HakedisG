@@ -37,6 +37,8 @@ public class PersonelUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldSicil;
 	private JTextField textFieldAdiSoyadi;
+	static String sicilAl;
+	static String mudurlukAl;
 
 	/**
 	 * Launch the application.
@@ -58,7 +60,7 @@ public class PersonelUI extends JFrame {
 	 * Create the frame.
 	 */
 	public PersonelUI() {
-		setTitle("Personel Islemleri");
+		setTitle("Personel Islemleri" +"Kullanici Sicil: "+sicilAl +"  Mudurluk: "+mudurlukAl);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1048, 680);
@@ -90,7 +92,7 @@ public class PersonelUI extends JFrame {
 		textFieldSicil.setColumns(10);
 		
 		JComboBox comboBoxUnvan = new JComboBox();
-		comboBoxUnvan.setModel(new DefaultComboBoxModel(new String[] {"Unvan Seciniz", "YAYA DAGITICI", "MOT. DAGITICI", "POSTA AYRIM  ", "ENGELLI (DAG.)", "ENGELLI (AYR.)"}));
+		comboBoxUnvan.setModel(new DefaultComboBoxModel(new String[] {"Unvan Seciniz", "YAYA DAGITICI", "MOT. DAGITICI", "POSTA AYRIM  ", "ENGELLI (DAG)", "ENGELLI (AYR)"}));
 		comboBoxUnvan.setForeground(new Color(128, 0, 0));
 		comboBoxUnvan.setFont(new Font("Tahoma", Font.BOLD, 16));
 		comboBoxUnvan.setBounds(10, 326, 357, 32);
@@ -116,7 +118,7 @@ public class PersonelUI extends JFrame {
 		labelUnvan.setBounds(10, 294, 357, 21);
 		panel.add(labelUnvan);
 		
-		JLabel labelMudurluk = new JLabel("...... Mudurlugu");
+		JLabel labelMudurluk = new JLabel(mudurlukAl);
 		labelMudurluk.setHorizontalAlignment(SwingConstants.LEFT);
 		labelMudurluk.setForeground(new Color(128, 0, 0));
 		labelMudurluk.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -185,7 +187,7 @@ public class PersonelUI extends JFrame {
 						
 						DataBaseSQL.kisiSil(silinecekPersDomain);
 						
-						list.setListData(DataBaseSQL.taseronPersListele().toArray());	
+						list.setListData(DataBaseSQL.taseronPersListele(mudurlukAl).toArray());	
 						
 						JOptionPane.showMessageDialog(null,"Kayit Silindi");
 					
@@ -223,7 +225,7 @@ public class PersonelUI extends JFrame {
 				    		  guncelleUser.setMudurluk(labelMudurluk.getText());					    	 
 				    		  DataBaseSQL.kisiGuncelle(guncelleUser);					    	  
 				    		  JOptionPane.showMessageDialog(null,"Guncelleme Basarili");															
-				    		  list.setListData(DataBaseSQL.taseronPersListele().toArray());							
+				    		  list.setListData(DataBaseSQL.taseronPersListele(mudurlukAl).toArray());							
 				    		  textFieldSicil.setText("");
 				    		  textFieldAdiSoyadi.setText("");
 				    		  comboBoxUnvan.setSelectedItem("Unvan Seciniz");
@@ -271,7 +273,7 @@ public class PersonelUI extends JFrame {
 				}													
 			}
 						
-				list.setListData(DataBaseSQL.taseronPersListele().toArray());
+				list.setListData(DataBaseSQL.taseronPersListele(mudurlukAl).toArray());
 		
 		}
 	});
@@ -307,7 +309,13 @@ public class PersonelUI extends JFrame {
 		
 		
 		
-		list.setListData(DataBaseSQL.taseronPersListele().toArray());
+		list.setListData(DataBaseSQL.taseronPersListele(mudurlukAl).toArray());
 		setLocationRelativeTo(null);
+	}
+	
+public static void MudurlukveSicilGetir(String sicil,String mudurluk) {
+		
+		sicilAl=sicil;
+		mudurlukAl=mudurluk;
 	}
 }

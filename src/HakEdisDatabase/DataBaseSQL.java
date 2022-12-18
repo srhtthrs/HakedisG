@@ -63,11 +63,12 @@ public class DataBaseSQL {
 		}		
 	}
 
-	public static ArrayList<TaseronPersonelDomain> taseronPersListele(){	
+	public static ArrayList<TaseronPersonelDomain> taseronPersListele(String mudurluk){	
 		ArrayList<TaseronPersonelDomain> isyeri= new ArrayList<TaseronPersonelDomain>();
 		Connection baglanti = DataBaseConn.baglantiAl();
 		try {
-			PreparedStatement sorgu2 =baglanti.prepareStatement("SELECT * FROM taseronpersonel WHERE sicil IS NOT NULL ORDER BY sicil ASC");	
+			PreparedStatement sorgu2 =baglanti.prepareStatement("SELECT * FROM taseronpersonel WHERE mudurluk=? ORDER BY sicil ASC");
+			sorgu2.setString(1, mudurluk);
 			ResultSet rs2=sorgu2.executeQuery();		
 			while(rs2.next()) {			
 				TaseronPersonelDomain siradakiDomain2=new TaseronPersonelDomain();					
@@ -116,11 +117,12 @@ public class DataBaseSQL {
 		}
 	}
 	
-	public static ArrayList<SicilDomain> sicilListele(){	
+	public static ArrayList<SicilDomain> sicilListele(String mudurluk){	
 		ArrayList<SicilDomain> sicil= new ArrayList<SicilDomain>();
 		Connection baglanti = DataBaseConn.baglantiAl();
 		try {
-			PreparedStatement sorgu2 =baglanti.prepareStatement("SELECT * FROM taseronpersonel WHERE sicil IS NOT NULL ORDER BY sicil ASC");	
+			PreparedStatement sorgu2 =baglanti.prepareStatement("SELECT * FROM taseronpersonel WHERE mudurluk=? ORDER BY sicil ASC");
+			sorgu2.setString(1, mudurluk);
 			ResultSet rs2=sorgu2.executeQuery();		
 			while(rs2.next()) {			
 				SicilDomain siradakiDomain2=new SicilDomain();					

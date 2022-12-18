@@ -14,7 +14,9 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.border.TitledBorder;
 
+import HakEdisDatabase.UyelikDataBaseSQL;
 import HakEdisDomain.Degiskenler;
+import HakEdisDomain.UyelikDomain;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.Icon;
@@ -23,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.DefaultComboBoxModel;
@@ -32,8 +35,8 @@ import java.awt.event.ActionEvent;
 public class LogInUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textFieldSicil;
+	private JTextField textFieldSifre;
 
 	/**
 	 * Launch the application.
@@ -66,65 +69,67 @@ public class LogInUI extends JFrame {
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
 		
-		textField = new JTextField();
-		textField.setBackground(Color.WHITE);
-		textField.setBorder(null);
-		textField.setBounds(103, 120, 259, 35);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldSicil = new JTextField();
+		textFieldSicil.setBackground(Color.WHITE);
+		textFieldSicil.setBorder(null);
+		textFieldSicil.setBounds(282, 106, 259, 35);
+		contentPane.add(textFieldSicil);
+		textFieldSicil.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBorder(null);
-		textField_1.setBackground(Color.WHITE);
-		textField_1.setBounds(103, 166, 259, 35);
-		contentPane.add(textField_1);
+		textFieldSifre = new JTextField();
+		textFieldSifre.setColumns(10);
+		textFieldSifre.setBorder(null);
+		textFieldSifre.setBackground(Color.WHITE);
+		textFieldSifre.setBounds(282, 152, 259, 35);
+		contentPane.add(textFieldSifre);
 		
 		JButton btnNewButton = new JButton("Giris");
+		
+		
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.setBorder(new LineBorder(Color.WHITE));
 		btnNewButton.setBackground(SystemColor.activeCaption);
-		btnNewButton.setBounds(241, 212, 121, 28);
+		btnNewButton.setBounds(420, 198, 121, 28);
 		contentPane.add(btnNewButton);
 		
 		
-		JComboBox comboBox = new JComboBox(Degiskenler.getMudurlukler());
-		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		comboBox.setBorder(null);
-		comboBox.setBackground(Color.WHITE);
-		comboBox.setBounds(103, 74, 259, 35);
-		contentPane.add(comboBox);
+		JComboBox comboBoxMudurluk = new JComboBox(Degiskenler.getMudurlukler());
+		comboBoxMudurluk.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		comboBoxMudurluk.setBorder(null);
+		comboBoxMudurluk.setBackground(Color.WHITE);
+		comboBoxMudurluk.setBounds(282, 60, 259, 35);
+		contentPane.add(comboBoxMudurluk);
 		
 		JLabel lblNewLabel = new JLabel("Mudurluk");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setBounds(21, 74, 72, 35);
+		lblNewLabel.setBounds(200, 60, 72, 35);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblSicil = new JLabel("Sicil");
 		lblSicil.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblSicil.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSicil.setForeground(Color.WHITE);
-		lblSicil.setBounds(21, 120, 72, 35);
+		lblSicil.setBounds(200, 106, 72, 35);
 		contentPane.add(lblSicil);
 		
 		JLabel lblParola = new JLabel("Parola");
 		lblParola.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblParola.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblParola.setForeground(Color.WHITE);
-		lblParola.setBounds(21, 166, 72, 35);
+		lblParola.setBounds(200, 152, 72, 35);
 		contentPane.add(lblParola);
 		
 		Icon iconKus2=new ImageIcon("Icons/pttkus.png");
 		JLabel lblNewLabel_1 = new JLabel(iconKus2);
-		lblNewLabel_1.setBounds(380, 74, 180, 128);
+		lblNewLabel_1.setBounds(10, 59, 180, 128);
 		contentPane.add(lblNewLabel_1);
 		
 		JButton btnUyeOl = new JButton("Uye Ol");
 		btnUyeOl.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnUyeOl.setForeground(Color.WHITE);
+		btnUyeOl.setForeground(Color.BLACK);
 		btnUyeOl.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -137,7 +142,49 @@ public class LogInUI extends JFrame {
 		});
 		btnUyeOl.setBorder(new LineBorder(Color.WHITE));
 		btnUyeOl.setBackground(SystemColor.activeCaption);
-		btnUyeOl.setBounds(103, 212, 121, 28);
+		btnUyeOl.setBounds(282, 198, 121, 28);
 		contentPane.add(btnUyeOl);
+		
+		JButton btnNewButton_1 = new JButton("Admin");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				LogInUI.this.dispose();
+				AdminUi mPane2sl=new AdminUi();
+				mPane2sl.setVisible(true);
+			}
+		});
+		btnNewButton_1.setBounds(10, 285, 89, 23);
+		contentPane.add(btnNewButton_1);
+		
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			String sicilAl=textFieldSicil.getText().toString();
+			String mudurlukAl=comboBoxMudurluk.getSelectedItem().toString();
+			String sifreAl=textFieldSifre.getText().toString();
+			
+			
+			
+			
+			
+				
+				if(UyelikDataBaseSQL.kullaniciGirisKontrol(sicilAl,mudurlukAl,sifreAl,"onaylandi")) {
+				
+				MudurlukPanel.MudurlukveSicilGetir(sicilAl,mudurlukAl);
+						
+				LogInUI.this.dispose();
+				MudurlukPanel mPane2sls=new MudurlukPanel();
+				mPane2sls.setVisible(true);
+				}
+				else {
+					
+					JOptionPane.showMessageDialog(null, "Hatali Giris");
+				}
+				
+				
+			}
+		});
 	}
 }

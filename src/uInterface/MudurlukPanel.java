@@ -38,10 +38,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.toedter.calendar.JDateChooser;
 
+import HakEdisDatabase.AylikHakedisSQL;
 import HakEdisDatabase.DataBaseConn;
 import HakEdisDatabase.DataBaseSQL;
-
+import HakEdisDomain.AylikHakEdisDomain;
 import HakEdisDomain.TaseronPersonelDomain;
+import HakEdisDomain.UyelikDomain;
 
 import java.awt.Component;
 import javax.swing.Box;
@@ -53,11 +55,16 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JList;
+import javax.swing.DebugGraphics;
+import javax.swing.AbstractListModel;
 
 public class MudurlukPanel extends JFrame {
 
 	private JPanel contentPane;
 	
+	
+	static String mudurlukAl;
+	static String sicilAl;
 	
 	
 	String secilenTarih;
@@ -66,7 +73,15 @@ public class MudurlukPanel extends JFrame {
 	
 	String secilenTarihAyAl, secilenTarihYilAl;
 	
-	float gO,hT,yI,r2GUR,r2GAR,cI,rT,oI,bI,eI,iI,dI,gE,tGC;
+	int fazlaMesai1=0,fazlaMesai2=0,fazlaMesai3=0,fazlaMesai4=0,fazlaMesai5=0,fazlaMesai6=0,fazlaMesai7=0,fazlaMesai8=0,
+	fazlaMesai9=0,fazlaMesai10=0,fazlaMesai11=0,fazlaMesai12=0,fazlaMesai13=0,fazlaMesai14=0,fazlaMesai15=0,fazlaMesai16=0,fazlaMesai17=0,
+	fazlaMesai18=0,fazlaMesai19=0,fazlaMesai20=0,fazlaMesai21=0,fazlaMesai22=0,fazlaMesai23=0,fazlaMesai24=0,fazlaMesai25=0,fazlaMesai26=0,
+	fazlaMesai27=0,fazlaMesai28=0,fazlaMesai29=0,fazlaMesai30=0,fazlaMesai31=0;
+	
+	int toplamMesai=0;
+	
+	
+	float gO,hT,yI,r2GUR,r2GAR,cI,rT,oI,bI,eI,iI,dI,gE;  //tGC;
 	float yG=0.0f;
 	
 	
@@ -92,12 +107,13 @@ public class MudurlukPanel extends JFrame {
 	 * Create the frame.
 	 */
 	public MudurlukPanel() {
+		setResizable(false);
 		
-		setTitle("...... Mudurlugu");
-		setResizable(false);
-		setResizable(false);
+	
+		
+		setTitle(mudurlukAl+"   Kullanici Sicil: "+sicilAl);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1548, 838);
+		setBounds(100, 100, 1450, 839);
 		contentPane = new JPanel();
 		
 		
@@ -120,13 +136,14 @@ public class MudurlukPanel extends JFrame {
 							"Idari Izin",							 
 							"Dogum Izni",							
 							"Yarim Gun", 						 
-							"Gelmedi.Gorevde.Yok",																				
-							"Tatil Gunu Calisma"									
+							"Gelmedi_Ucretsiz.Izin",																				
+							"Fazla Mesai",
+							"Seciniz"
 							};
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setVisible(false);
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_3.setBorder(new LineBorder(Color.WHITE));
 		panel_3.setBackground(new Color(95, 158, 160));
 		panel_3.setBounds(10, 290, 193, 498);
 		contentPane.add(panel_3);
@@ -134,14 +151,14 @@ public class MudurlukPanel extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setVisible(false);
-		panel.setBounds(311, 11, 1211, 268);
+		panel.setBounds(213, 11, 1211, 268);
 		contentPane.add(panel);
-		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel.setBorder(new LineBorder(Color.WHITE));
 		panel.setBackground(SystemColor.activeCaption);
 		panel.setLayout(null);
 		
 		JLabel label1 = new JLabel("1");
-		label1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		label1.setBorder(new LineBorder(Color.WHITE));
 		label1.setForeground(new Color(0, 0, 0));
 		label1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		label1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -311,6 +328,22 @@ public class MudurlukPanel extends JFrame {
 		labelDogumIzni.setBounds(10, 286, 132, 14);
 		panel_3.add(labelDogumIzni);
 		
+		JLabel label30 = new JLabel("30");
+		label30.setBorder(new LineBorder(Color.WHITE));
+		label30.setForeground(new Color(0, 0, 0));
+		label30.setHorizontalAlignment(SwingConstants.CENTER);
+		label30.setFont(new Font("Tahoma", Font.BOLD, 14));
+		label30.setBounds(179, 204, 30, 26);
+		panel.add(label30);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setVisible(false);
+		panel_4.setBorder(new LineBorder(Color.WHITE));
+		panel_4.setBackground(new Color(95, 158, 160));
+		panel_4.setBounds(213, 290, 357, 498);
+		contentPane.add(panel_4);
+		panel_4.setLayout(null);
+		
 		JLabel labelDogumIzniSay = new JLabel("0");
 		labelDogumIzniSay.setHorizontalAlignment(SwingConstants.CENTER);
 		labelDogumIzniSay.setForeground(Color.WHITE);
@@ -332,7 +365,7 @@ public class MudurlukPanel extends JFrame {
 		labelYarimGunSay.setBounds(152, 311, 36, 14);
 		panel_3.add(labelYarimGunSay);
 		
-		JLabel labelGelmedi = new JLabel("Gelmedi, Gorevde Yok");
+		JLabel labelGelmedi = new JLabel("Gelmedi & Ucretsiz Izin");
 		labelGelmedi.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelGelmedi.setForeground(Color.WHITE);
 		labelGelmedi.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -346,16 +379,16 @@ public class MudurlukPanel extends JFrame {
 		labelGelmediSay.setBounds(152, 336, 36, 14);
 		panel_3.add(labelGelmediSay);
 		
-		JLabel labelTatilGunuCalisma = new JLabel("Tatil Gunu Calisma");
+		JLabel labelTatilGunuCalisma = new JLabel("Fazla Mesai (saat)");
 		labelTatilGunuCalisma.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelTatilGunuCalisma.setForeground(Color.WHITE);
+		labelTatilGunuCalisma.setForeground(new Color(128, 0, 0));
 		labelTatilGunuCalisma.setFont(new Font("Tahoma", Font.BOLD, 11));
 		labelTatilGunuCalisma.setBounds(10, 361, 132, 14);
 		panel_3.add(labelTatilGunuCalisma);
 		
 		JLabel labelTatilGunuCalismaSay = new JLabel("0");
 		labelTatilGunuCalismaSay.setHorizontalAlignment(SwingConstants.CENTER);
-		labelTatilGunuCalismaSay.setForeground(Color.WHITE);
+		labelTatilGunuCalismaSay.setForeground(new Color(128, 0, 0));
 		labelTatilGunuCalismaSay.setFont(new Font("Tahoma", Font.BOLD, 11));
 		labelTatilGunuCalismaSay.setBounds(152, 361, 36, 14);
 		panel_3.add(labelTatilGunuCalismaSay);
@@ -367,6 +400,27 @@ public class MudurlukPanel extends JFrame {
 		labelYemekUcretiVerGun.setForeground(new Color(128, 0, 0));
 		labelYemekUcretiVerGun.setFont(new Font("Tahoma", Font.BOLD, 11));
 		labelYemekUcretiVerGun.setBorder(new EmptyBorder(0, 0, 0, 0));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 32, 337, 418);
+		panel_4.add(scrollPane);
+		
+		
+		JList list1 = new JList();
+		scrollPane.setViewportView(list1);
+		list1.setSelectionBackground(Color.WHITE);
+		list1.setModel(new AbstractListModel() {
+			String[] values = new String[] {};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		list1.setBorder(new LineBorder(Color.WHITE));
+		list1.setForeground(Color.WHITE);
+		list1.setBackground(new Color(95, 158, 160));
 		
 		JLabel labelYolUcretiVerilecekGun = new JLabel("Yol Ucreti Verlck Gun");
 		labelYolUcretiVerilecekGun.setBounds(10, 411, 132, 14);
@@ -411,10 +465,21 @@ public class MudurlukPanel extends JFrame {
 		
 		
 		JButton BtnGunAdetleriOnayla = new JButton("Onayla");
+	
+		
+		
+		
+		
 		BtnGunAdetleriOnayla.setBounds(85, 461, 98, 26);
 		panel_3.add(BtnGunAdetleriOnayla);
 		BtnGunAdetleriOnayla.setBackground(UIManager.getColor("Button.light"));
 		BtnGunAdetleriOnayla.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JLabel lblNewLabel_10_1_1 = new JLabel("4");
+		lblNewLabel_10_1_1.setForeground(SystemColor.info);
+		lblNewLabel_10_1_1.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblNewLabel_10_1_1.setBounds(0, 454, 36, 44);
+		panel_3.add(lblNewLabel_10_1_1);
 	
 		
 		JComboBox comboBox2 = new JComboBox(gunler);
@@ -431,7 +496,7 @@ public class MudurlukPanel extends JFrame {
 		
 		
 		JLabel lblNewLabel_1 = new JLabel("02");
-		lblNewLabel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_1.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -447,7 +512,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox3);
 		
 		JLabel lblNewLabel_2 = new JLabel("03");
-		lblNewLabel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_2.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_2.setForeground(new Color(0, 0, 0));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -463,7 +528,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox4);
 		
 		JLabel lblNewLabel_3 = new JLabel("04");
-		lblNewLabel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_3.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_3.setForeground(new Color(0, 0, 0));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -479,7 +544,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox5);
 		
 		JLabel lblNewLabel_4 = new JLabel("05");
-		lblNewLabel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_4.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_4.setForeground(new Color(0, 0, 0));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -495,7 +560,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox6);
 		
 		JLabel lblNewLabel_5 = new JLabel("06");
-		lblNewLabel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_5.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_5.setForeground(new Color(0, 0, 0));
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -511,7 +576,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox7);
 		
 		JLabel lblNewLabel_6 = new JLabel("07");
-		lblNewLabel_6.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_6.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_6.setForeground(new Color(0, 0, 0));
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -519,7 +584,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(lblNewLabel_6);
 		
 		JLabel lblNewLabel_7 = new JLabel("08");
-		lblNewLabel_7.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_7.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_7.setForeground(new Color(0, 0, 0));
 		lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -535,7 +600,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox8);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("09");
-		lblNewLabel_1_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_1_1.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_1_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -551,7 +616,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox9);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("10");
-		lblNewLabel_2_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_2_1.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_2_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -567,7 +632,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox10);
 		
 		JLabel lblNewLabel_3_1 = new JLabel("11");
-		lblNewLabel_3_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_3_1.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_3_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -583,7 +648,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox11);
 		
 		JLabel lblNewLabel_4_1 = new JLabel("12");
-		lblNewLabel_4_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_4_1.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_4_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_4_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -599,7 +664,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox12);
 		
 		JLabel lblNewLabel_5_1 = new JLabel("13");
-		lblNewLabel_5_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_5_1.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_5_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_5_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -615,7 +680,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox13);
 		
 		JLabel lblNewLabel_6_1 = new JLabel("14");
-		lblNewLabel_6_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_6_1.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_6_1.setForeground(new Color(0, 0, 0));
 		lblNewLabel_6_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -631,7 +696,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox14);
 		
 		JLabel lblNewLabel_8 = new JLabel("15");
-		lblNewLabel_8.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_8.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_8.setForeground(new Color(0, 0, 0));
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -647,7 +712,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox15);
 		
 		JLabel lblNewLabel_1_2 = new JLabel("16");
-		lblNewLabel_1_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_1_2.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_1_2.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -662,8 +727,16 @@ public class MudurlukPanel extends JFrame {
 		comboBox16.setBounds(219, 127, 122, 29);
 		panel.add(comboBox16);
 		
+		JLabel labelFM30 = new JLabel("");
+		labelFM30.setVisible(false);
+		labelFM30.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM30.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM30.setForeground(new Color(128, 0, 0));
+		labelFM30.setBounds(300, 204, 41, 28);
+		panel.add(labelFM30);
+		
 		JLabel lblNewLabel_2_2 = new JLabel("17");
-		lblNewLabel_2_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_2_2.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_2_2.setForeground(new Color(0, 0, 0));
 		lblNewLabel_2_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2_2.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -679,7 +752,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox17);
 		
 		JLabel lblNewLabel_3_2 = new JLabel("18");
-		lblNewLabel_3_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_3_2.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_3_2.setForeground(new Color(0, 0, 0));
 		lblNewLabel_3_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_2.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -695,12 +768,254 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox18);
 		
 		JLabel lblNewLabel_4_2 = new JLabel("19");
-		lblNewLabel_4_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_4_2.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_4_2.setForeground(new Color(0, 0, 0));
 		lblNewLabel_4_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4_2.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_4_2.setBounds(695, 127, 30, 26);
 		panel.add(lblNewLabel_4_2);
+		
+		JLabel labelFM29 = new JLabel("");
+		labelFM29.setVisible(false);
+		labelFM29.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM29.setForeground(new Color(128, 0, 0));
+		labelFM29.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM29.setBounds(131, 203, 41, 27);
+		panel.add(labelFM29);
+		
+		JLabel labelFM28 = new JLabel("");
+		labelFM28.setVisible(false);
+		labelFM28.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM28.setForeground(new Color(128, 0, 0));
+		labelFM28.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM28.setBounds(1160, 169, 41, 27);
+		panel.add(labelFM28);
+		
+		JLabel labelFM21 = new JLabel("");
+		labelFM21.setBounds(1160, 127, 41, 27);
+		panel.add(labelFM21);
+		labelFM21.setVisible(false);
+		labelFM21.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM21.setForeground(new Color(128, 0, 0));
+		labelFM21.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM27 = new JLabel("");
+		labelFM27.setBounds(988, 167, 41, 27);
+		panel.add(labelFM27);
+		labelFM27.setVisible(false);
+		labelFM27.setDoubleBuffered(true);
+		labelFM27.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM27.setForeground(new Color(128, 0, 0));
+		labelFM27.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM26 = new JLabel("");
+		labelFM26.setBounds(816, 167, 41, 27);
+		panel.add(labelFM26);
+		labelFM26.setVisible(false);
+		labelFM26.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM26.setForeground(new Color(128, 0, 0));
+		labelFM26.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM26.setDoubleBuffered(true);
+		
+		JLabel labelFM25 = new JLabel("");
+		labelFM25.setBounds(644, 167, 41, 27);
+		panel.add(labelFM25);
+		labelFM25.setVisible(false);
+		labelFM25.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM25.setForeground(new Color(128, 0, 0));
+		labelFM25.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM25.setDoubleBuffered(true);
+		
+		JLabel labelFM24 = new JLabel("");
+		labelFM24.setBounds(472, 168, 41, 27);
+		panel.add(labelFM24);
+		labelFM24.setVisible(false);
+		labelFM24.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM24.setForeground(new Color(128, 0, 0));
+		labelFM24.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM20 = new JLabel("");
+		labelFM20.setVisible(false);
+		labelFM20.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM20.setForeground(new Color(128, 0, 0));
+		labelFM20.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM20.setBounds(988, 127, 41, 27);
+		panel.add(labelFM20);
+		
+		JLabel labelFM19 = new JLabel("");
+		labelFM19.setVisible(false);
+		labelFM19.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM19.setForeground(new Color(128, 0, 0));
+		labelFM19.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM19.setBounds(816, 127, 41, 27);
+		panel.add(labelFM19);
+		
+		JLabel labelFM18 = new JLabel("");
+		labelFM18.setVisible(false);
+		labelFM18.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM18.setForeground(new Color(128, 0, 0));
+		labelFM18.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM18.setBounds(644, 127, 41, 27);
+		panel.add(labelFM18);
+		
+		JLabel labelFM17 = new JLabel("");
+		labelFM17.setVisible(false);
+		labelFM17.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM17.setForeground(new Color(128, 0, 0));
+		labelFM17.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM17.setBounds(472, 129, 41, 27);
+		panel.add(labelFM17);
+		
+		JLabel labelFM16 = new JLabel("");
+		labelFM16.setVisible(false);
+		labelFM16.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM16.setForeground(new Color(128, 0, 0));
+		labelFM16.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM16.setBounds(300, 126, 41, 27);
+		panel.add(labelFM16);
+		
+		JLabel labelFM15 = new JLabel("");
+		labelFM15.setVisible(false);
+		labelFM15.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM15.setForeground(new Color(128, 0, 0));
+		labelFM15.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM15.setBounds(131, 126, 41, 27);
+		panel.add(labelFM15);
+		
+		JLabel labelFM14 = new JLabel("");
+		labelFM14.setVisible(false);
+		labelFM14.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM14.setForeground(new Color(128, 0, 0));
+		labelFM14.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM14.setBounds(1160, 86, 41, 27);
+		panel.add(labelFM14);
+		
+		JLabel labelFM13 = new JLabel("");
+		labelFM13.setVisible(false);
+		labelFM13.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM13.setForeground(new Color(128, 0, 0));
+		labelFM13.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM13.setBounds(988, 86, 41, 27);
+		panel.add(labelFM13);
+		
+		JLabel labelFM12 = new JLabel("");
+		labelFM12.setVisible(false);
+		labelFM12.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM12.setForeground(new Color(128, 0, 0));
+		labelFM12.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM12.setBounds(816, 86, 41, 27);
+		panel.add(labelFM12);
+		
+		JLabel labelFM11 = new JLabel("");
+		labelFM11.setVisible(false);
+		labelFM11.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM11.setForeground(new Color(128, 0, 0));
+		labelFM11.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM11.setBounds(644, 86, 41, 27);
+		panel.add(labelFM11);
+		
+		JLabel labelFM10 = new JLabel("");
+		labelFM10.setVisible(false);
+		labelFM10.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM10.setForeground(new Color(128, 0, 0));
+		labelFM10.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM10.setBounds(472, 91, 41, 27);
+		panel.add(labelFM10);
+		
+		JLabel labelFM9 = new JLabel("");
+		labelFM9.setVisible(false);
+		labelFM9.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM9.setForeground(new Color(128, 0, 0));
+		labelFM9.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM9.setBounds(300, 90, 41, 27);
+		panel.add(labelFM9);
+		
+		JLabel labelFM8 = new JLabel("");
+		labelFM8.setVisible(false);
+		labelFM8.setDoubleBuffered(true);
+		labelFM8.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM8.setForeground(new Color(128, 0, 0));
+		labelFM8.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM8.setBounds(131, 87, 41, 27);
+		panel.add(labelFM8);
+		
+		JLabel labelFM7 = new JLabel("");
+		labelFM7.setVisible(false);
+		labelFM7.setDoubleBuffered(true);
+		labelFM7.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM7.setForeground(new Color(128, 0, 0));
+		labelFM7.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM7.setBounds(1160, 50, 41, 27);
+		panel.add(labelFM7);
+		
+		JLabel labelFM6 = new JLabel("");
+		labelFM6.setVisible(false);
+		labelFM6.setDoubleBuffered(true);
+		labelFM6.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM6.setForeground(new Color(128, 0, 0));
+		labelFM6.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM6.setBounds(988, 50, 41, 27);
+		panel.add(labelFM6);
+		
+		JLabel labelFM1 = new JLabel("");
+		labelFM1.setBounds(131, 49, 41, 27);
+		panel.add(labelFM1);
+		labelFM1.setVisible(false);
+		labelFM1.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM1.setForeground(new Color(128, 0, 0));
+		labelFM1.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM2 = new JLabel("");
+		labelFM2.setBounds(300, 50, 41, 27);
+		panel.add(labelFM2);
+		labelFM2.setVisible(false);
+		labelFM2.setDoubleBuffered(true);
+		labelFM2.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM2.setForeground(new Color(128, 0, 0));
+		labelFM2.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM3 = new JLabel("");
+		labelFM3.setBounds(472, 52, 41, 27);
+		panel.add(labelFM3);
+		labelFM3.setVisible(false);
+		labelFM3.setDoubleBuffered(true);
+		labelFM3.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM3.setForeground(new Color(128, 0, 0));
+		labelFM3.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM4 = new JLabel("");
+		labelFM4.setBounds(644, 50, 41, 27);
+		panel.add(labelFM4);
+		labelFM4.setVisible(false);
+		labelFM4.setDoubleBuffered(true);
+		labelFM4.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM4.setForeground(new Color(128, 0, 0));
+		labelFM4.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM5 = new JLabel("");
+		labelFM5.setBounds(816, 50, 41, 27);
+		panel.add(labelFM5);
+		labelFM5.setVisible(false);
+		labelFM5.setDoubleBuffered(true);
+		labelFM5.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM5.setForeground(new Color(128, 0, 0));
+		labelFM5.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		
+		JLabel labelFM23 = new JLabel("");
+		labelFM23.setVisible(false);
+		labelFM23.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM23.setForeground(new Color(128, 0, 0));
+		labelFM23.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM23.setBounds(300, 167, 41, 27);
+		panel.add(labelFM23);
+		
+		JLabel labelFM22 = new JLabel("");
+		labelFM22.setVisible(false);
+		labelFM22.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM22.setForeground(new Color(128, 0, 0));
+		labelFM22.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM22.setBounds(131, 166, 41, 27);
+		panel.add(labelFM22);
 		
 		
 		
@@ -712,13 +1027,23 @@ public class MudurlukPanel extends JFrame {
 		comboBox19.setBounds(735, 127, 122, 29);
 		panel.add(comboBox19);
 		
+		JLabel labelFM31 = new JLabel("");
+		labelFM31.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		labelFM31.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFM31.setForeground(new Color(128, 0, 0));
+		labelFM31.setVisible(false);
+		labelFM31.setBounds(472, 205, 40, 28);
+		panel.add(labelFM31);
+		
 		JLabel lblNewLabel_5_2 = new JLabel("20");
-		lblNewLabel_5_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_5_2.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_5_2.setForeground(new Color(0, 0, 0));
 		lblNewLabel_5_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5_2.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_5_2.setBounds(867, 127, 30, 26);
 		panel.add(lblNewLabel_5_2);
+		
+		
 		
 		JComboBox comboBox20 = new JComboBox(gunler);
 		comboBox20.setSelectedIndex(0);
@@ -729,7 +1054,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox20);
 		
 		JLabel lblNewLabel_6_2 = new JLabel("21");
-		lblNewLabel_6_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_6_2.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_6_2.setForeground(new Color(0, 0, 0));
 		lblNewLabel_6_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6_2.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -755,7 +1080,7 @@ public class MudurlukPanel extends JFrame {
 		
 		
 		JLabel lblNewLabel_9 = new JLabel("22");
-		lblNewLabel_9.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_9.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_9.setForeground(new Color(0, 0, 0));
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -767,11 +1092,11 @@ public class MudurlukPanel extends JFrame {
 		comboBox22.setFont(new Font("Times New Roman", Font.BOLD, 10));
 		comboBox22.setBorder(new LineBorder(new Color(0, 0, 0)));
 		comboBox22.setBackground(Color.WHITE);
-		comboBox22.setBounds(50, 167, 122, 29);
+		comboBox22.setBounds(50, 167, 119, 29);
 		panel.add(comboBox22);
 		
 		JLabel lblNewLabel_1_3 = new JLabel("23");
-		lblNewLabel_1_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_1_3.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_1_3.setForeground(new Color(0, 0, 0));
 		lblNewLabel_1_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1_3.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -783,11 +1108,11 @@ public class MudurlukPanel extends JFrame {
 		comboBox23.setFont(new Font("Times New Roman", Font.BOLD, 10));
 		comboBox23.setBorder(new LineBorder(new Color(0, 0, 0)));
 		comboBox23.setBackground(Color.WHITE);
-		comboBox23.setBounds(219, 167, 122, 29);
+		comboBox23.setBounds(219, 164, 122, 29);
 		panel.add(comboBox23);
 		
 		JLabel lblNewLabel_2_3 = new JLabel("24");
-		lblNewLabel_2_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_2_3.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_2_3.setForeground(new Color(0, 0, 0));
 		lblNewLabel_2_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2_3.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -803,7 +1128,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox24);
 		
 		JLabel lblNewLabel_3_3 = new JLabel("25");
-		lblNewLabel_3_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_3_3.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_3_3.setForeground(new Color(0, 0, 0));
 		lblNewLabel_3_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_3.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -819,7 +1144,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox25);
 		
 		JLabel lblNewLabel_4_3 = new JLabel("26");
-		lblNewLabel_4_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_4_3.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_4_3.setForeground(new Color(0, 0, 0));
 		lblNewLabel_4_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4_3.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -835,7 +1160,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox26);
 		
 		JLabel lblNewLabel_5_3 = new JLabel("27");
-		lblNewLabel_5_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_5_3.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_5_3.setForeground(new Color(0, 0, 0));
 		lblNewLabel_5_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_5_3.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -851,7 +1176,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox27);
 		
 		JLabel lblNewLabel_6_3 = new JLabel("28");
-		lblNewLabel_6_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_6_3.setBorder(new LineBorder(Color.WHITE));
 		lblNewLabel_6_3.setForeground(new Color(0, 0, 0));
 		lblNewLabel_6_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6_3.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -868,7 +1193,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox28);
 		
 		JLabel label29 = new JLabel("29");
-		label29.setBorder(new LineBorder(new Color(0, 0, 0)));
+		label29.setBorder(new LineBorder(Color.WHITE));
 		label29.setForeground(new Color(0, 0, 0));
 		label29.setHorizontalAlignment(SwingConstants.CENTER);
 		label29.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -880,16 +1205,10 @@ public class MudurlukPanel extends JFrame {
 		comboBox29.setFont(new Font("Times New Roman", Font.BOLD, 10));
 		comboBox29.setBorder(new LineBorder(new Color(0, 0, 0)));
 		comboBox29.setBackground(Color.WHITE);
-		comboBox29.setBounds(50, 204, 122, 29);
+		comboBox29.setBounds(50, 204, 119, 29);
 		panel.add(comboBox29);
 		
-		JLabel label30 = new JLabel("30");
-		label30.setBorder(new LineBorder(new Color(0, 0, 0)));
-		label30.setForeground(new Color(0, 0, 0));
-		label30.setHorizontalAlignment(SwingConstants.CENTER);
-		label30.setFont(new Font("Tahoma", Font.BOLD, 14));
-		label30.setBounds(179, 204, 30, 26);
-		panel.add(label30);
+		
 		
 		JComboBox comboBox30 = new JComboBox(gunler);
 		comboBox30.setSelectedIndex(0);
@@ -903,7 +1222,7 @@ public class MudurlukPanel extends JFrame {
 		
 		
 		JLabel label31 = new JLabel("31");
-		label31.setBorder(new LineBorder(new Color(0, 0, 0)));
+		label31.setBorder(new LineBorder(Color.WHITE));
 		label31.setForeground(new Color(0, 0, 0));
 		label31.setHorizontalAlignment(SwingConstants.CENTER);
 		label31.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -911,10 +1230,733 @@ public class MudurlukPanel extends JFrame {
 		panel.add(label31);
 		
 		JComboBox comboBox31 = new JComboBox(gunler);
-		comboBox31.addActionListener(new ActionListener() {
+		
+		
+		comboBox31.addActionListener (new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				
+				if(comboBox31.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					
+					try {
+					
+					fazlaMesai31 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai31));											
+					
+					
+					if(fazlaMesai31>0)
+						
+					{
+					labelFM31.setVisible(true);														
+					labelFM31.setText(" "+fazlaMesai31+" saat");
+					comboBox31.setBounds(391, 205, 90, 29);										
+					}	
+				else 
+					{
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					
+				}
+				else {
+					labelFM31.setVisible(false);
+					fazlaMesai31=0;
+					labelFM31.setText(""+fazlaMesai31);
+					comboBox31.setBounds(391, 205, 122, 29);}				
 			}
 		});
+		
+		comboBox30.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox30.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					
+					try {
+						
+					fazlaMesai30 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai30));											
+					if(fazlaMesai30>0)
+					{labelFM30.setVisible(true);														
+					labelFM30.setText(" "+fazlaMesai30+" saat");
+					comboBox30.setBounds(219, 204, 90, 29);																
+					}					
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}										
+				}
+			
+			catch(Exception e1) {
+				//e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+			}
+				}
+				else {
+					labelFM30.setVisible(false);
+					fazlaMesai30=0;
+					labelFM30.setText(""+fazlaMesai30);
+					comboBox30.setBounds(219, 204, 122, 29);}				
+			}
+		});
+	
+		comboBox29.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox29.getSelectedItem().toString().equals("Fazla Mesai")) {
+					
+					try {
+					fazlaMesai29 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai29));											
+					if(fazlaMesai29>0)
+					{labelFM29.setVisible(true);														
+					labelFM29.setText(" "+fazlaMesai29+" saat");
+					comboBox29.setBounds(50, 204, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+				}
+				catch(Exception e1) {
+					//e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				
+				}
+				else {labelFM29.setVisible(false);
+				      fazlaMesai29=0;
+					  labelFM29.setText(""+fazlaMesai29);
+					  comboBox29.setBounds(50, 204, 119, 29);}}});
+
+		comboBox28.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox28.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai28 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai28));											
+					if(fazlaMesai28>0)
+					{labelFM28.setVisible(true);														
+					labelFM28.setText(" "+fazlaMesai28+" saat");
+					comboBox28.setBounds(1079, 167, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					
+				}
+				catch(Exception e1) {
+					//e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+				
+				}
+				else {labelFM28.setVisible(false);
+				      fazlaMesai28=0;
+					  labelFM28.setText(""+fazlaMesai28);
+					  comboBox28.setBounds(1079, 167, 122, 29);}}});
+		
+		comboBox27.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox27.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					
+					try {
+					
+					fazlaMesai27 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai27));											
+					if(fazlaMesai27>0)
+					{labelFM27.setVisible(true);														
+					labelFM27.setText(" "+fazlaMesai27+" saat");
+					comboBox27.setBounds(907, 167, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					
+					
+					
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					
+					}
+				else {labelFM27.setVisible(false);
+				      fazlaMesai27=0;
+					  labelFM27.setText(""+fazlaMesai27);
+					  comboBox27.setBounds(907, 167, 122, 29);}}});				
+		//26  735, 167, 122, 29		
+		comboBox26.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox26.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai26 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai26));											
+					if(fazlaMesai26>0)
+					{labelFM26.setVisible(true);														
+					labelFM26.setText(" "+fazlaMesai26+" saat");
+					comboBox26.setBounds(735, 167, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					
+					}
+				else {labelFM26.setVisible(false);
+				      fazlaMesai26=0;
+					  labelFM26.setText(""+fazlaMesai26);
+					  comboBox26.setBounds(735, 167, 122, 29);}}});
+		//25  563, 167, 122, 29
+		comboBox25.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox25.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai25 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai25));											
+					if(fazlaMesai25>0)
+					{labelFM25.setVisible(true);														
+					labelFM25.setText(" "+fazlaMesai25+" saat");
+					comboBox25.setBounds(563, 167, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM25.setVisible(false);
+				      fazlaMesai25=0;
+					  labelFM25.setText(""+fazlaMesai25);
+					  comboBox25.setBounds(563, 167, 122, 29);}}});		
+		//24  391, 168, 122, 29		
+		comboBox24.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox24.getSelectedItem().toString().equals("Fazla Mesai")) {		
+					
+					try {
+					fazlaMesai24 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai24));											
+					if(fazlaMesai24>0)
+					{labelFM24.setVisible(true);														
+					labelFM24.setText(" "+fazlaMesai24+" saat");
+					comboBox24.setBounds(391, 168, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					}
+				else {labelFM24.setVisible(false);
+				      fazlaMesai24=0;
+					  labelFM24.setText(""+fazlaMesai24);
+					  comboBox24.setBounds(391, 168, 122, 29);}}});
+		//23  219, 164, 122, 29
+		comboBox23.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox23.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai23 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai23));											
+					if(fazlaMesai23>0)
+					{labelFM23.setVisible(true);														
+					labelFM23.setText(" "+fazlaMesai23+" saat");
+					comboBox23.setBounds(219, 164, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM23.setVisible(false);
+				      fazlaMesai23=0;
+					  labelFM23.setText(""+fazlaMesai23);
+					  comboBox23.setBounds(219, 164, 122, 29);}}});
+		//22  50, 167, 119, 29
+		comboBox22.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox22.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai22 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai22));											
+					if(fazlaMesai22>0)
+					{labelFM22.setVisible(true);														
+					labelFM22.setText(" "+fazlaMesai22+" saat");
+					comboBox22.setBounds(50, 167, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM22.setVisible(false);
+				      fazlaMesai22=0;
+					  labelFM22.setText(""+fazlaMesai22);
+					  comboBox22.setBounds(50, 167, 119, 29);}}});
+		
+		//21  1079, 127, 122, 29
+		comboBox21.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox21.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai21 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai21));											
+					if(fazlaMesai21>0)
+					{labelFM21.setVisible(true);														
+					labelFM21.setText(" "+fazlaMesai21+" saat");
+					comboBox21.setBounds(1079, 127,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM21.setVisible(false);
+				      fazlaMesai21=0;
+					  labelFM21.setText(""+fazlaMesai21);
+					  comboBox21.setBounds(1079, 127, 122, 29);}}});
+		//20  907, 127, 122, 29
+		comboBox20.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox20.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai20 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai20));											
+					if(fazlaMesai20>0)
+					{labelFM20.setVisible(true);														
+					labelFM20.setText(" "+fazlaMesai20+" saat");
+					comboBox20.setBounds(907, 127,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM20.setVisible(false);
+				      fazlaMesai20=0;
+					  labelFM20.setText(""+fazlaMesai20);
+					  comboBox20.setBounds(907, 127, 122, 29);}}});
+		
+		//19  735, 127, 122, 29
+		comboBox19.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox19.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai19 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai19));											
+					if(fazlaMesai19>0)
+					{labelFM19.setVisible(true);														
+					labelFM19.setText(" "+fazlaMesai19+" saat");
+					comboBox19.setBounds(735, 127,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM19.setVisible(false);
+				      fazlaMesai19=0;
+					  labelFM19.setText(""+fazlaMesai19);
+					  comboBox19.setBounds(735, 127, 122, 29);}}});
+		//18  563, 127, 122, 29
+		comboBox18.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox18.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai18 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai18));											
+					if(fazlaMesai18>0)
+					{labelFM18.setVisible(true);														
+					labelFM18.setText(" "+fazlaMesai18+" saat");
+					comboBox18.setBounds(563, 127,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM18.setVisible(false);
+				      fazlaMesai18=0;
+					  labelFM18.setText(""+fazlaMesai18);
+					  comboBox18.setBounds(563, 127, 122, 29);}}});
+		//17  391, 128, 122, 29
+		comboBox17.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox17.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai17 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai17));											
+					if(fazlaMesai17>0)
+					{labelFM17.setVisible(true);														
+					labelFM17.setText(" "+fazlaMesai17+" saat");
+					comboBox17.setBounds(391, 128,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM17.setVisible(false);
+				      fazlaMesai17=0;
+					  labelFM17.setText(""+fazlaMesai17);
+					  comboBox17.setBounds(391, 128, 122, 29);}}});
+		//16  219, 127, 122, 29
+		comboBox16.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox16.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai16 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai16));											
+					if(fazlaMesai16>0)
+					{labelFM16.setVisible(true);														
+					labelFM16.setText(" "+fazlaMesai16+" saat");
+					comboBox16.setBounds(219, 127,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM16.setVisible(false);
+				      fazlaMesai16=0;
+					  labelFM16.setText(""+fazlaMesai16);
+					  comboBox16.setBounds(219, 127, 122, 29);}}});
+		//15  50, 127, 122, 29
+		comboBox15.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox15.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai15 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai15));											
+					if(fazlaMesai15>0)
+					{labelFM15.setVisible(true);														
+					labelFM15.setText(" "+fazlaMesai15+" saat");
+					comboBox15.setBounds(50, 127,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM15.setVisible(false);
+				      fazlaMesai15=0;
+					  labelFM15.setText(""+fazlaMesai15);
+					  comboBox15.setBounds(50, 127, 122, 29);}}});
+		//14 1079, 87, 122, 29
+		comboBox14.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox14.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai14 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai14));											
+					if(fazlaMesai14>0)
+					{labelFM14.setVisible(true);														
+					labelFM14.setText(" "+fazlaMesai14+" saat");
+					comboBox14.setBounds(1079, 87,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM14.setVisible(false);
+				      fazlaMesai14=0;
+					  labelFM14.setText(""+fazlaMesai14);
+					  comboBox14.setBounds(1079, 87, 122, 29);}}});
+		//13  907, 87, 122, 29
+		comboBox13.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox13.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai13 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai13));											
+					if(fazlaMesai13>0)
+					{labelFM13.setVisible(true);														
+					labelFM13.setText(" "+fazlaMesai13+" saat");
+					comboBox13.setBounds(907, 87,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM13.setVisible(false);
+				      fazlaMesai13=0;
+					  labelFM13.setText(""+fazlaMesai13);
+					  comboBox13.setBounds(907, 87, 122, 29);}}});
+		
+		//12  735, 87, 122, 29
+		comboBox12.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox12.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai12 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai12));											
+					if(fazlaMesai12>0)
+					{labelFM12.setVisible(true);														
+					labelFM12.setText(" "+fazlaMesai12+" saat");
+					comboBox12.setBounds(735, 87,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM12.setVisible(false);
+				      fazlaMesai12=0;
+					  labelFM12.setText(""+fazlaMesai12);
+					  comboBox12.setBounds(735, 87, 122, 29);}}});
+		//11  563, 87, 122, 29
+		comboBox11.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox11.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai11 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai11));											
+					if(fazlaMesai11>0)
+					{labelFM11.setVisible(true);														
+					labelFM11.setText(" "+fazlaMesai11+" saat");
+					comboBox11.setBounds(563, 87,90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM11.setVisible(false);
+				      fazlaMesai11=0;
+					  labelFM11.setText(""+fazlaMesai11);
+					  comboBox11.setBounds(563, 87, 122, 29);}}});
+		//10  391, 88, 122, 29
+		comboBox10.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox10.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai10 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai10));											
+					if(fazlaMesai10>0)
+					{labelFM10.setVisible(true);														
+					labelFM10.setText(" "+fazlaMesai10+" saat");
+					comboBox10.setBounds(391, 88, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM10.setVisible(false);
+				      fazlaMesai10=0;
+					  labelFM10.setText(""+fazlaMesai10);
+					  comboBox10.setBounds(391, 88, 122, 29);}}});
+		//9  219, 87, 122, 29
+		comboBox9.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox9.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai9 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai9));											
+					if(fazlaMesai9>0)
+					{labelFM9.setVisible(true);														
+					labelFM9.setText(" "+fazlaMesai9+" saat");
+					comboBox9.setBounds(219, 87, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM9.setVisible(false);
+				      fazlaMesai9=0;
+					  labelFM9.setText(""+fazlaMesai9);
+					  comboBox9.setBounds(219, 87, 122, 29);}}});
+		//8  50, 87, 122, 29
+		comboBox8.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox8.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai8 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai8));											
+					if(fazlaMesai8>0)
+					{labelFM8.setVisible(true);														
+					labelFM8.setText(" "+fazlaMesai8+" saat");
+					comboBox8.setBounds(50, 87, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM8.setVisible(false);
+				      fazlaMesai8=0;
+					  labelFM8.setText(""+fazlaMesai8);
+					  comboBox8.setBounds(50, 87, 122, 29);}}});
+		//7  1079, 50, 122, 29
+		comboBox7.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox7.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai7 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai7));											
+					if(fazlaMesai7>0)
+					{labelFM7.setVisible(true);														
+					labelFM7.setText(" "+fazlaMesai7+" saat");
+					comboBox7.setBounds(1079, 50, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM7.setVisible(false);
+				      fazlaMesai7=0;
+					  labelFM7.setText(""+fazlaMesai7);
+					  comboBox7.setBounds(1079, 50, 122, 29);}}});
+		//6  907, 50, 122, 29
+		comboBox6.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox6.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai6 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai6));											
+					if(fazlaMesai6>0)
+					{labelFM6.setVisible(true);														
+					labelFM6.setText(" "+fazlaMesai6+" saat");
+					comboBox6.setBounds(907, 50, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM6.setVisible(false);
+				      fazlaMesai6=0;
+					  labelFM6.setText(""+fazlaMesai6);
+					  comboBox6.setBounds(907, 50, 122, 29);}}});
+		//5  735, 50, 122, 29
+		comboBox5.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox5.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai5 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai5));											
+					if(fazlaMesai5>0)
+					{labelFM5.setVisible(true);														
+					labelFM5.setText(" "+fazlaMesai5+" saat");
+					comboBox5.setBounds(735, 50, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM5.setVisible(false);
+				      fazlaMesai5=0;
+					  labelFM5.setText(""+fazlaMesai5);
+					  comboBox5.setBounds(735, 50, 122, 29);}}});
+		//4  563, 50, 122, 29
+		comboBox4.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox4.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai4 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai4));											
+					if(fazlaMesai4>0)
+					{labelFM4.setVisible(true);														
+					labelFM4.setText(" "+fazlaMesai4+" saat");
+					comboBox4.setBounds(563, 50, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM4.setVisible(false);
+				      fazlaMesai4=0;
+					  labelFM4.setText(""+fazlaMesai4);
+					  comboBox4.setBounds(563, 50, 122, 29);}}});
+		//3  391, 51, 122, 29
+		comboBox3.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox3.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai3 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai3));											
+					if(fazlaMesai3>0)
+					{labelFM3.setVisible(true);														
+					labelFM3.setText(" "+fazlaMesai3+" saat");
+					comboBox3.setBounds(391, 51, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM3.setVisible(false);
+				      fazlaMesai3=0;
+					  labelFM3.setText(""+fazlaMesai3);
+					  comboBox3.setBounds(391, 51, 122, 29);}}});
+		//2  219, 50, 122, 29
+		comboBox2.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox2.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai2 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai2));											
+					if(fazlaMesai2>0)
+					{labelFM2.setVisible(true);														
+					labelFM2.setText(" "+fazlaMesai2+" saat");
+					comboBox2.setBounds(219, 50, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM2.setVisible(false);
+				      fazlaMesai2=0;
+					  labelFM2.setText(""+fazlaMesai2);
+					  comboBox2.setBounds(219, 50, 122, 29);}}});
+		//1  50, 48, 122, 29
+		comboBox1.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(comboBox1.getSelectedItem().toString().equals("Fazla Mesai")) {	
+					try {
+					fazlaMesai1 = Integer.parseInt(JOptionPane.showInputDialog("Mesai Saati Giriniz: ",+fazlaMesai1));											
+					if(fazlaMesai1>0)
+					{labelFM1.setVisible(true);														
+					labelFM1.setText(" "+fazlaMesai1+" saat");
+					comboBox1.setBounds(50, 48, 90, 29);}					
+					else{JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);}
+					}
+					catch(Exception e1) {
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Mesai Girilmedi", "UYARI" , JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					}
+				else {labelFM1.setVisible(false);
+				      fazlaMesai1=0;
+					  labelFM1.setText(""+fazlaMesai1);
+					  comboBox1.setBounds(50, 48, 122, 29);}}});
+		
+		
+		
+		
 		comboBox31.setSelectedIndex(0);
 		comboBox31.setFont(new Font("Times New Roman", Font.BOLD, 10));
 		comboBox31.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -923,7 +1965,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(comboBox31);
 		
 		JLabel labelGun1 = new JLabel("");
-		labelGun1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelGun1.setBorder(new LineBorder(Color.WHITE));
 		labelGun1.setForeground(Color.BLACK);
 		labelGun1.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGun1.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -931,7 +1973,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(labelGun1);
 		
 		JLabel labelGun2 = new JLabel("");
-		labelGun2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelGun2.setBorder(new LineBorder(Color.WHITE));
 		labelGun2.setForeground(Color.BLACK);
 		labelGun2.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGun2.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -939,7 +1981,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(labelGun2);
 		
 		JLabel labelGun3 = new JLabel("");
-		labelGun3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelGun3.setBorder(new LineBorder(Color.WHITE));
 		labelGun3.setForeground(Color.BLACK);
 		labelGun3.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGun3.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -947,7 +1989,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(labelGun3);
 		
 		JLabel labelGun4 = new JLabel("");
-		labelGun4.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelGun4.setBorder(new LineBorder(Color.WHITE));
 		labelGun4.setForeground(Color.BLACK);
 		labelGun4.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGun4.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -955,7 +1997,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(labelGun4);
 		
 		JLabel labelGun5 = new JLabel("");
-		labelGun5.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelGun5.setBorder(new LineBorder(Color.WHITE));
 		labelGun5.setForeground(Color.BLACK);
 		labelGun5.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGun5.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -963,7 +2005,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(labelGun5);
 		
 		JLabel labelGun6 = new JLabel("");
-		labelGun6.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelGun6.setBorder(new LineBorder(Color.WHITE));
 		labelGun6.setForeground(Color.BLACK);
 		labelGun6.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGun6.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -971,7 +2013,7 @@ public class MudurlukPanel extends JFrame {
 		panel.add(labelGun6);
 		
 		JLabel labelGun7 = new JLabel("");
-		labelGun7.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelGun7.setBorder(new LineBorder(Color.WHITE));
 		labelGun7.setForeground(Color.BLACK);
 		labelGun7.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGun7.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -1003,7 +2045,9 @@ public class MudurlukPanel extends JFrame {
 				dI=0;
 				yG=0.0f;
 				gE=0;
-				tGC=0;
+				//tGC=0;
+				
+				
 				
 	
 				
@@ -1026,7 +2070,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox1.getSelectedIndex()==11){dI++;}
 					else if(comboBox1.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox1.getSelectedIndex()==13){gE++;}
-					else if(comboBox1.getSelectedIndex()==14){tGC++;}
+					else if(comboBox1.getSelectedIndex()==14){gO++;}
 				
 		
 				 if(comboBox2.getSelectedIndex()==0){gO++;;}
@@ -1043,7 +2087,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox2.getSelectedIndex()==11){dI++;}
 					else if(comboBox2.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox2.getSelectedIndex()==13){gE++;}
-					else if(comboBox2.getSelectedIndex()==14){tGC++;}
+					else if(comboBox2.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox3.getSelectedIndex()==0){gO++;;}
 					else if(comboBox3.getSelectedIndex()==1){hT++;}
@@ -1059,7 +2103,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox3.getSelectedIndex()==11){dI++;}
 					else if(comboBox3.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox3.getSelectedIndex()==13){gE++;}
-					else if(comboBox3.getSelectedIndex()==14){tGC++;}
+					else if(comboBox3.getSelectedIndex()==14){gO++;}
 			
 				 if(comboBox4.getSelectedIndex()==0){gO++;;}
 					else if(comboBox4.getSelectedIndex()==1){hT++;}
@@ -1075,7 +2119,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox4.getSelectedIndex()==11){dI++;}
 					else if(comboBox4.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox4.getSelectedIndex()==13){gE++;}
-					else if(comboBox4.getSelectedIndex()==14){tGC++;}
+					else if(comboBox4.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox5.getSelectedIndex()==0){gO++;;}
 					else if(comboBox5.getSelectedIndex()==1){hT++;}
@@ -1091,7 +2135,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox5.getSelectedIndex()==11){dI++;}
 					else if(comboBox5.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox5.getSelectedIndex()==13){gE++;}
-					else if(comboBox5.getSelectedIndex()==14){tGC++;}
+					else if(comboBox5.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox6.getSelectedIndex()==0){gO++;;}
 					else if(comboBox6.getSelectedIndex()==1){hT++;}
@@ -1107,7 +2151,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox6.getSelectedIndex()==11){dI++;}
 					else if(comboBox6.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox6.getSelectedIndex()==13){gE++;}
-					else if(comboBox6.getSelectedIndex()==14){tGC++;}
+					else if(comboBox6.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox7.getSelectedIndex()==0){gO++;;}
 					else if(comboBox7.getSelectedIndex()==1){hT++;}
@@ -1123,7 +2167,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox7.getSelectedIndex()==11){dI++;}
 					else if(comboBox7.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox7.getSelectedIndex()==13){gE++;}
-					else if(comboBox7.getSelectedIndex()==14){tGC++;}
+					else if(comboBox7.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox8.getSelectedIndex()==0){gO++;;}
 					else if(comboBox8.getSelectedIndex()==1){hT++;}
@@ -1139,7 +2183,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox8.getSelectedIndex()==11){dI++;}
 					else if(comboBox8.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox8.getSelectedIndex()==13){gE++;}
-					else if(comboBox8.getSelectedIndex()==14){tGC++;}
+					else if(comboBox8.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox9.getSelectedIndex()==0){gO++;;}
 					else if(comboBox9.getSelectedIndex()==1){hT++;}
@@ -1155,7 +2199,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox9.getSelectedIndex()==11){dI++;}
 					else if(comboBox9.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox9.getSelectedIndex()==13){gE++;}
-					else if(comboBox9.getSelectedIndex()==14){tGC++;}
+					else if(comboBox9.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox10.getSelectedIndex()==0){gO++;;}
 					else if(comboBox10.getSelectedIndex()==1){hT++;}
@@ -1171,7 +2215,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox10.getSelectedIndex()==11){dI++;}
 					else if(comboBox10.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox10.getSelectedIndex()==13){gE++;}
-					else if(comboBox10.getSelectedIndex()==14){tGC++;}
+					else if(comboBox10.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox11.getSelectedIndex()==0){gO++;;}
 					else if(comboBox11.getSelectedIndex()==1){hT++;}
@@ -1187,7 +2231,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox11.getSelectedIndex()==11){dI++;}
 					else if(comboBox11.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox11.getSelectedIndex()==13){gE++;}
-					else if(comboBox11.getSelectedIndex()==14){tGC++;}
+					else if(comboBox11.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox12.getSelectedIndex()==0){gO++;;}
 					else if(comboBox12.getSelectedIndex()==1){hT++;}
@@ -1203,7 +2247,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox12.getSelectedIndex()==11){dI++;}
 					else if(comboBox12.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox12.getSelectedIndex()==13){gE++;}
-					else if(comboBox12.getSelectedIndex()==14){tGC++;}
+					else if(comboBox12.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox13.getSelectedIndex()==0){gO++;;}
 					else if(comboBox13.getSelectedIndex()==1){hT++;}
@@ -1219,7 +2263,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox13.getSelectedIndex()==11){dI++;}
 					else if(comboBox13.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox13.getSelectedIndex()==13){gE++;}
-					else if(comboBox13.getSelectedIndex()==14){tGC++;}
+					else if(comboBox13.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox14.getSelectedIndex()==0){gO++;;}
 					else if(comboBox14.getSelectedIndex()==1){hT++;}
@@ -1235,7 +2279,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox14.getSelectedIndex()==11){dI++;}
 					else if(comboBox14.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox14.getSelectedIndex()==13){gE++;}
-					else if(comboBox14.getSelectedIndex()==14){tGC++;}
+					else if(comboBox14.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox15.getSelectedIndex()==0){gO++;;}
 					else if(comboBox15.getSelectedIndex()==1){hT++;}
@@ -1251,7 +2295,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox15.getSelectedIndex()==11){dI++;}
 					else if(comboBox15.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox15.getSelectedIndex()==13){gE++;}
-					else if(comboBox15.getSelectedIndex()==14){tGC++;}
+					else if(comboBox15.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox16.getSelectedIndex()==0){gO++;;}
 					else if(comboBox5.getSelectedIndex()==1){hT++;}
@@ -1267,7 +2311,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox5.getSelectedIndex()==11){dI++;}
 					else if(comboBox5.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox5.getSelectedIndex()==13){gE++;}
-					else if(comboBox5.getSelectedIndex()==14){tGC++;}
+					else if(comboBox5.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox17.getSelectedIndex()==0){gO++;;}
 					else if(comboBox17.getSelectedIndex()==1){hT++;}
@@ -1283,7 +2327,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox17.getSelectedIndex()==11){dI++;}
 					else if(comboBox17.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox17.getSelectedIndex()==13){gE++;}
-					else if(comboBox17.getSelectedIndex()==14){tGC++;}
+					else if(comboBox17.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox18.getSelectedIndex()==0){gO++;;}
 					else if(comboBox18.getSelectedIndex()==1){hT++;}
@@ -1299,7 +2343,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox18.getSelectedIndex()==11){dI++;}
 					else if(comboBox18.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox18.getSelectedIndex()==13){gE++;}
-					else if(comboBox18.getSelectedIndex()==14){tGC++;}
+					else if(comboBox18.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox19.getSelectedIndex()==0){gO++;;}
 					else if(comboBox19.getSelectedIndex()==1){hT++;}
@@ -1315,7 +2359,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox19.getSelectedIndex()==11){dI++;}
 					else if(comboBox19.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox19.getSelectedIndex()==13){gE++;}
-					else if(comboBox19.getSelectedIndex()==14){tGC++;}
+					else if(comboBox19.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox20.getSelectedIndex()==0){gO++;;}
 					else if(comboBox20.getSelectedIndex()==1){hT++;}
@@ -1331,7 +2375,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox20.getSelectedIndex()==11){dI++;}
 					else if(comboBox20.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox20.getSelectedIndex()==13){gE++;}
-					else if(comboBox20.getSelectedIndex()==14){tGC++;}
+					else if(comboBox20.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox21.getSelectedIndex()==0){gO++;;}
 					else if(comboBox21.getSelectedIndex()==1){hT++;}
@@ -1347,7 +2391,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox21.getSelectedIndex()==11){dI++;}
 					else if(comboBox21.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox21.getSelectedIndex()==13){gE++;}
-					else if(comboBox21.getSelectedIndex()==14){tGC++;}
+					else if(comboBox21.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox22.getSelectedIndex()==0){gO++;;}
 					else if(comboBox22.getSelectedIndex()==1){hT++;}
@@ -1363,7 +2407,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox22.getSelectedIndex()==11){dI++;}
 					else if(comboBox22.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox22.getSelectedIndex()==13){gE++;}
-					else if(comboBox22.getSelectedIndex()==14){tGC++;}
+					else if(comboBox22.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox23.getSelectedIndex()==0){gO++;;}
 					else if(comboBox23.getSelectedIndex()==1){hT++;}
@@ -1379,7 +2423,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox23.getSelectedIndex()==11){dI++;}
 					else if(comboBox23.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox23.getSelectedIndex()==13){gE++;}
-					else if(comboBox23.getSelectedIndex()==14){tGC++;}
+					else if(comboBox23.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox24.getSelectedIndex()==0){gO++;;}
 					else if(comboBox24.getSelectedIndex()==1){hT++;}
@@ -1395,7 +2439,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox24.getSelectedIndex()==11){dI++;}
 					else if(comboBox24.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox24.getSelectedIndex()==13){gE++;}
-					else if(comboBox24.getSelectedIndex()==14){tGC++;}
+					else if(comboBox24.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox25.getSelectedIndex()==0){gO++;;}
 					else if(comboBox25.getSelectedIndex()==1){hT++;}
@@ -1411,7 +2455,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox25.getSelectedIndex()==11){dI++;}
 					else if(comboBox25.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox25.getSelectedIndex()==13){gE++;}
-					else if(comboBox25.getSelectedIndex()==14){tGC++;}
+					else if(comboBox25.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox26.getSelectedIndex()==0){gO++;;}
 					else if(comboBox26.getSelectedIndex()==1){hT++;}
@@ -1427,7 +2471,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox26.getSelectedIndex()==11){dI++;}
 					else if(comboBox26.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox26.getSelectedIndex()==13){gE++;}
-					else if(comboBox26.getSelectedIndex()==14){tGC++;}
+					else if(comboBox26.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox27.getSelectedIndex()==0){gO++;;}
 					else if(comboBox27.getSelectedIndex()==1){hT++;}
@@ -1443,7 +2487,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox27.getSelectedIndex()==11){dI++;}
 					else if(comboBox27.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox27.getSelectedIndex()==13){gE++;}
-					else if(comboBox27.getSelectedIndex()==14){tGC++;}
+					else if(comboBox27.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox28.getSelectedIndex()==0){gO++;;}
 					else if(comboBox28.getSelectedIndex()==1){hT++;}
@@ -1459,7 +2503,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox28.getSelectedIndex()==11){dI++;}
 					else if(comboBox28.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox28.getSelectedIndex()==13){gE++;}
-					else if(comboBox28.getSelectedIndex()==14){tGC++;}
+					else if(comboBox28.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox29.getSelectedIndex()==0){gO++;;}
 					else if(comboBox29.getSelectedIndex()==1){hT++;}
@@ -1475,7 +2519,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox29.getSelectedIndex()==11){dI++;}
 					else if(comboBox29.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox29.getSelectedIndex()==13){gE++;}
-					else if(comboBox29.getSelectedIndex()==14){tGC++;}
+					else if(comboBox29.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox30.getSelectedIndex()==0){gO++;;}
 					else if(comboBox30.getSelectedIndex()==1){hT++;}
@@ -1491,7 +2535,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox30.getSelectedIndex()==11){dI++;}
 					else if(comboBox30.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox30.getSelectedIndex()==13){gE++;}
-					else if(comboBox30.getSelectedIndex()==14){tGC++;}
+					else if(comboBox30.getSelectedIndex()==14){gO++;}
 				 
 				 if(comboBox31.getSelectedIndex()==0){gO++;;}
 					else if(comboBox31.getSelectedIndex()==1){hT++;}
@@ -1507,7 +2551,7 @@ public class MudurlukPanel extends JFrame {
 					else if(comboBox31.getSelectedIndex()==11){dI++;}
 					else if(comboBox31.getSelectedIndex()==12){yG=yG+0.5f;}
 					else if(comboBox31.getSelectedIndex()==13){gE++;}
-					else if(comboBox31.getSelectedIndex()==14){tGC++;}
+					else if(comboBox31.getSelectedIndex()==14){gO++;}
 				 
 				 
 				 
@@ -1527,10 +2571,12 @@ public class MudurlukPanel extends JFrame {
 			labelDogumIzniSay.setText(""+dI);
 			labelYarimGunSay.setText(""+yG);
 			labelGelmediSay.setText(""+gE);
-			labelTatilGunuCalismaSay.setText(""+tGC);
 			
 			
-			
+			labelTatilGunuCalismaSay.setText(""+(fazlaMesai1+fazlaMesai2+fazlaMesai3+fazlaMesai4+fazlaMesai5+fazlaMesai6+fazlaMesai7+fazlaMesai8+
+				fazlaMesai9+fazlaMesai10+fazlaMesai11+fazlaMesai12+fazlaMesai13+fazlaMesai14+fazlaMesai15+fazlaMesai16+fazlaMesai17+
+				fazlaMesai18+fazlaMesai19+fazlaMesai20+fazlaMesai21+fazlaMesai22+fazlaMesai23+fazlaMesai24+fazlaMesai25+fazlaMesai26+
+				fazlaMesai27+fazlaMesai28+fazlaMesai29+fazlaMesai30+fazlaMesai31));						
 			labelMaasHesaplacakGunSay.setText(""+(gO+rT+hT+yG+oI+bI+eI+yI+iI));
 			labelYolUcretiVerilecekGunSay.setText(""+((2*yG)+gO));
 			labelYemekUcretiVerGunSay.setText(""+((2*yG)+gO));
@@ -1556,29 +2602,29 @@ public class MudurlukPanel extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setVisible(false);
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_2.setBorder(new LineBorder(Color.WHITE));
 		panel_2.setBackground(SystemColor.activeCaption);
-		panel_2.setBounds(10, 156, 291, 123);
+		panel_2.setBounds(10, 156, 193, 123);
 		contentPane.add(panel_2);
 		panel_2.setLayout(null);
 		
 		JLabel labelIsim = new JLabel("");
 		labelIsim.setForeground(new Color(255, 255, 255));
-		labelIsim.setHorizontalAlignment(SwingConstants.LEFT);
+		labelIsim.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIsim.setBorder(null);
 		labelIsim.setFont(new Font("Tahoma", Font.BOLD, 12));
-		labelIsim.setBounds(10, 85, 271, 26);
+		labelIsim.setBounds(10, 85, 173, 26);
 		panel_2.add(labelIsim);
 		
 		JLabel labelUnvan = new JLabel("");
 		labelUnvan.setForeground(new Color(255, 255, 255));
-		labelUnvan.setHorizontalAlignment(SwingConstants.LEFT);
+		labelUnvan.setHorizontalAlignment(SwingConstants.CENTER);
 		labelUnvan.setBorder(null);
 		labelUnvan.setFont(new Font("Tahoma", Font.BOLD, 12));
-		labelUnvan.setBounds(10, 48, 271, 26);
+		labelUnvan.setBounds(10, 48, 173, 26);
 		panel_2.add(labelUnvan);
 		
-		JComboBox comboBoxSicil = new JComboBox(DataBaseSQL.sicilListele().toArray());
+		JComboBox comboBoxSicil = new JComboBox(DataBaseSQL.sicilListele(mudurlukAl).toArray());
 		comboBoxSicil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -1586,13 +2632,19 @@ public class MudurlukPanel extends JFrame {
 		comboBoxSicil.setBorder(new LineBorder(new Color(0, 0, 0)));
 		comboBoxSicil.setBackground(Color.WHITE);
 		comboBoxSicil.setFont(new Font("Tahoma", Font.BOLD, 12));
-		comboBoxSicil.setBounds(10, 11, 125, 26);
+		comboBoxSicil.setBounds(42, 11, 141, 26);
 		panel_2.add(comboBoxSicil);
 		
+		JLabel lblNewLabel_10_1 = new JLabel("2");
+		lblNewLabel_10_1.setBounds(0, 0, 28, 48);
+		panel_2.add(lblNewLabel_10_1);
+		lblNewLabel_10_1.setForeground(SystemColor.info);
+		lblNewLabel_10_1.setFont(new Font("Tahoma", Font.BOLD, 36));
+		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_1.setBorder(new LineBorder(Color.WHITE));
 		panel_1.setBackground(SystemColor.activeCaption);
-		panel_1.setBounds(10, 11, 291, 134);
+		panel_1.setBounds(10, 11, 193, 134);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -1600,25 +2652,17 @@ public class MudurlukPanel extends JFrame {
 		dateChooser.setBorder(new LineBorder(new Color(0, 0, 0)));
 		dateChooser.setBackground(Color.WHITE);
 		dateChooser.setFont(new Font("Tahoma", Font.BOLD, 12));
-		dateChooser.setBounds(10, 93, 157, 26);
+		dateChooser.setBounds(12, 75, 171, 21);
 		panel_1.add(dateChooser);
 		
 		JButton btnNewButton_1 = new JButton("Sec");
-		btnNewButton_1.setBounds(180, 93, 98, 26);
+		btnNewButton_1.setBounds(118, 107, 65, 21);
 		panel_1.add(btnNewButton_1);
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnNewButton_1.setBackground(UIManager.getColor("Button.light"));
 		
-		JLabel lblNewLabel = new JLabel("Hak Edis Yapilacak Ayin Ilk Gununu Seciniz.");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBorder(null);
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setBounds(10, 48, 268, 34);
-		panel_1.add(lblNewLabel);
-		
-		JButton btnNewButton_1_1 = new JButton("Personel Bilgileri Kontrol");
-		btnNewButton_1_1.setBounds(7, 11, 268, 26);
+		JButton btnNewButton_1_1 = new JButton("Personel Kontrol");
+		btnNewButton_1_1.setBounds(33, 11, 150, 21);
 		panel_1.add(btnNewButton_1_1);
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1628,51 +2672,111 @@ public class MudurlukPanel extends JFrame {
 				mPane2sl.setVisible(true);
 			}
 		});
-		btnNewButton_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton_1_1.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnNewButton_1_1.setBackground(UIManager.getColor("Button.light"));
+		
+		JLabel lblNewLabel_10 = new JLabel("1");
+		lblNewLabel_10.setBounds(0, 0, 28, 51);
+		panel_1.add(lblNewLabel_10);
+		lblNewLabel_10.setForeground(SystemColor.info);
+		lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 36));
+		
+		JLabel lblNewLabel = new JLabel("Hak Edis Ayinin Ilk Gununu Seciniz.");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBorder(null);
+		lblNewLabel.setForeground(new Color(128, 0, 0));
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lblNewLabel.setBounds(12, 43, 171, 21);
+		panel_1.add(lblNewLabel);
 		
 		JLabel labelTarihYaz = new JLabel("");
 		labelTarihYaz.setFont(new Font("Tahoma", Font.BOLD, 11));
 		labelTarihYaz.setForeground(Color.WHITE);
 		labelTarihYaz.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelTarihYaz.setBounds(832, 231, 261, 26);
+		labelTarihYaz.setBounds(523, 231, 570, 26);
 		panel.add(labelTarihYaz);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setVisible(false);
-		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_4.setBackground(SystemColor.activeCaption);
-		panel_4.setBounds(213, 290, 328, 498);
-		contentPane.add(panel_4);
-		panel_4.setLayout(null);
+		JLabel lblNewLabel_10_2 = new JLabel("3");
+		lblNewLabel_10_2.setBounds(1173, 194, 28, 39);
+		panel.add(lblNewLabel_10_2);
+		lblNewLabel_10_2.setForeground(SystemColor.info);
+		lblNewLabel_10_2.setFont(new Font("Tahoma", Font.BOLD, 36));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 308, 439);
-		panel_4.add(scrollPane);
 		
-		JList list = new JList();
-		scrollPane.setViewportView(list);
-		list.setBorder(new LineBorder(Color.WHITE));
-		list.setForeground(Color.WHITE);
-		list.setBackground(new Color(95, 158, 160));
 		
-		JButton btnTmnOnayla = new JButton("T\u00FCm\u00FCn\u00FC Onayla");
-		btnTmnOnayla.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnTmnOnayla.setBackground(UIManager.getColor("Button.light"));
-		btnTmnOnayla.setBounds(183, 461, 135, 26);
-		panel_4.add(btnTmnOnayla);
 		
-		JButton btnGncelle = new JButton("G\u00FCncelle");
-		btnGncelle.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnGncelle.setBackground(UIManager.getColor("Button.light"));
-		btnGncelle.setBounds(80, 461, 93, 26);
-		panel_4.add(btnGncelle);
+		
+		
+		
+		JLabel lblNewLabel_10_1_1_1 = new JLabel("5");
+		lblNewLabel_10_1_1_1.setForeground(SystemColor.info);
+		lblNewLabel_10_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblNewLabel_10_1_1_1.setBounds(10, 454, 28, 44);
+		panel_4.add(lblNewLabel_10_1_1_1);
+		
+		
+		
+		
 		
 		JButton btnTmnOnayla_1_1 = new JButton("Sil");
+	
+		btnTmnOnayla_1_1.setBounds(137, 461, 58, 26);
+		panel_4.add(btnTmnOnayla_1_1);
 		btnTmnOnayla_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnTmnOnayla_1_1.setBackground(UIManager.getColor("Button.light"));
-		btnTmnOnayla_1_1.setBounds(10, 461, 60, 26);
-		panel_4.add(btnTmnOnayla_1_1);
+		
+		JButton btnTmnOnayla = new JButton("T\u00FCm\u00FCn\u00FC Onayla");
+		btnTmnOnayla.setBounds(205, 461, 142, 26);
+		panel_4.add(btnTmnOnayla);
+		btnTmnOnayla.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTmnOnayla.setBackground(UIManager.getColor("Button.light"));
+		
+		JLabel lblNewLabel_11 = new JLabel("Sicil");
+		lblNewLabel_11.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_11.setForeground(Color.WHITE);
+		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_11.setBounds(10, 11, 50, 20);
+		panel_4.add(lblNewLabel_11);
+		
+		JLabel lblNewLabel_11_1 = new JLabel("Unvan");
+		lblNewLabel_11_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_11_1.setForeground(Color.WHITE);
+		lblNewLabel_11_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_11_1.setBounds(70, 11, 84, 20);
+		panel_4.add(lblNewLabel_11_1);
+		
+		JLabel lblNewLabel_11_2 = new JLabel("Mesai");
+		lblNewLabel_11_2.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_11_2.setForeground(Color.WHITE);
+		lblNewLabel_11_2.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel_11_2.setBounds(164, 11, 40, 20);
+		panel_4.add(lblNewLabel_11_2);
+		
+		JLabel lblNewLabel_11_3 = new JLabel("Ucret Gun");
+		lblNewLabel_11_3.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_11_3.setForeground(Color.WHITE);
+		lblNewLabel_11_3.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_11_3.setBounds(214, 11, 58, 20);
+		panel_4.add(lblNewLabel_11_3);
+		
+		JLabel lblNewLabel_11_3_1 = new JLabel("Yol/Yemek");
+		lblNewLabel_11_3_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_11_3_1.setForeground(Color.WHITE);
+		lblNewLabel_11_3_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_11_3_1.setBounds(282, 11, 65, 20);
+		panel_4.add(lblNewLabel_11_3_1);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setVisible(false);
+		panel_5.setBorder(new LineBorder(Color.WHITE, 2));
+		panel_5.setBackground(new Color(95, 158, 160));
+		panel_5.setBounds(580, 290, 844, 499);
+		contentPane.add(panel_5);
+		panel_5.setLayout(null);
+		
+		 
+		 
+		
 		
 	
 		
@@ -1893,6 +2997,9 @@ public class MudurlukPanel extends JFrame {
 			
 			comboBox31.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
+										
+				
+					
 					if(!comboBox31.getSelectedItem().toString().equals("Gorevde")) {
 						comboBox31.setBackground(new Color(233, 150, 122));}
 					else {comboBox31.setBackground(SystemColor.WHITE);}}});
@@ -1906,11 +3013,156 @@ public class MudurlukPanel extends JFrame {
 //*************************************************************************************************************************************************************	
 			
 			
+			BtnGunAdetleriOnayla.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					 
+					
+			if(labelIsim.getText().equals("")||labelGorevdeSay.getText().toString().equals("0")) {
+				
+				JOptionPane.showMessageDialog(null,"Hak Edis Yapilacak Personelin Sicilini Secip, Hak Edis Yapilacak Gunleri Giriniz.");
+			}
+			else {
+					
+				      try {								    	  
+				    	  AylikHakEdisDomain addHakedis=new AylikHakEdisDomain();	
+				    	  			    	 
+				    	  addHakedis.setSicil(comboBoxSicil.getSelectedItem().toString());
+				    	  addHakedis.setMudurluk(mudurlukAl);
+				    	  addHakedis.setUnvan(labelUnvan.getText());
+				    	  addHakedis.setYil(String.valueOf(yil));
+				    	  addHakedis.setAy(String.valueOf(ay));
+				    	  
+				    	  
+				    	  addHakedis.setBir(comboBox1.getSelectedItem().toString());
+				    	  addHakedis.setBirM(labelFM1.getText());
+				    	  
+				    	  addHakedis.setIki(comboBox2.getSelectedItem().toString());
+				    	  addHakedis.setIkiM(labelFM2.getText());
+				    	  
+				    	  addHakedis.setUc(comboBox3.getSelectedItem().toString());
+				    	  addHakedis.setUcM(labelFM3.getText());
+				    	  
+				    	  addHakedis.setDort(comboBox4.getSelectedItem().toString());
+				    	  addHakedis.setDortM(labelFM4.getText());
+				    	  
+				    	  
+				    	  addHakedis.setBes(comboBox5.getSelectedItem().toString());
+				    	  addHakedis.setBesM(labelFM5.getText());
+				    	  
+				    	  addHakedis.setAlti(comboBox6.getSelectedItem().toString());
+				    	  addHakedis.setAltiM(labelFM6.getText());
+				    	  
+				    	  addHakedis.setYedi(comboBox7.getSelectedItem().toString());
+				    	  addHakedis.setYediM(labelFM7.getText());
+				    	  
+				    	  addHakedis.setSekiz(comboBox8.getSelectedItem().toString());
+				    	  addHakedis.setSekizM(labelFM8.getText());
+				    	  
+				    	  addHakedis.setDokuz(comboBox9.getSelectedItem().toString());
+				    	  addHakedis.setDokuzM(labelFM9.getText());
+				    	  
+				    	  addHakedis.setOn(comboBox10.getSelectedItem().toString());
+				    	  addHakedis.setOnM(labelFM10.getText());
+				    	  
+				    	  addHakedis.setOnBir(comboBox11.getSelectedItem().toString());
+				    	  addHakedis.setOnBirM(labelFM11.getText());
+				    	  
+				    	  addHakedis.setOnIki(comboBox12.getSelectedItem().toString());
+				    	  addHakedis.setOnIkiM(labelFM12.getText());
+				    	  
+				    	  addHakedis.setOnUc(comboBox13.getSelectedItem().toString());
+				    	  addHakedis.setOnUcM(labelFM13.getText());
+				    	  
+				    	  addHakedis.setOnDort(comboBox14.getSelectedItem().toString());
+				    	  addHakedis.setOnDortM(labelFM14.getText());
+				    	  
+				    	  addHakedis.setOnBes(comboBox15.getSelectedItem().toString());
+				    	  addHakedis.setOnBesM(labelFM15.getText());
+				    	  
+				    	  addHakedis.setOnAlti(comboBox16.getSelectedItem().toString());
+				    	  addHakedis.setOnAltiM(labelFM16.getText());
+				    	  
+				    	  addHakedis.setOnYedi(comboBox17.getSelectedItem().toString());
+				    	  addHakedis.setOnYediM(labelFM17.getText());
+				    	  
+				    	  addHakedis.setOnSekiz(comboBox18.getSelectedItem().toString());
+				    	  addHakedis.setOnSekizM(labelFM18.getText());
+				    	  
+				    	  addHakedis.setOnDokuz(comboBox19.getSelectedItem().toString());
+				    	  addHakedis.setOnDokuzM(labelFM19.getText());
+				    	  
+				    	  addHakedis.setYirmi(comboBox20.getSelectedItem().toString());
+				    	  addHakedis.setYirmiM(labelFM20.getText());
+				    	  
+				    	  addHakedis.setYirmiBir(comboBox21.getSelectedItem().toString());
+				    	  addHakedis.setYirmiBirM(labelFM21.getText());
+				    	  
+				    	  addHakedis.setYirmiIki(comboBox22.getSelectedItem().toString());
+				    	  addHakedis.setYirmiIkiM(labelFM22.getText());
+				    	  
+				    	  addHakedis.setYirmiUc(comboBox23.getSelectedItem().toString());
+				    	  addHakedis.setYirmiUcM(labelFM23.getText());
+				    	  
+				    	  addHakedis.setYirmiDort(comboBox24.getSelectedItem().toString());
+				    	  addHakedis.setYirmiDortM(labelFM24.getText());
+				    	  
+				    	  addHakedis.setYirmiBes(comboBox25.getSelectedItem().toString());
+				    	  addHakedis.setYirmiBesM(labelFM25.getText());
+				    	  
+				    	  addHakedis.setYirmiAlti(comboBox26.getSelectedItem().toString());
+				    	  addHakedis.setYirmiAltiM(labelFM26.getText());
+				    	  
+				    	  addHakedis.setYirmiYedi(comboBox27.getSelectedItem().toString());
+				    	  addHakedis.setYirmiYediM(labelFM27.getText());
+				    	  
+				    	  addHakedis.setYirmiSekiz(comboBox28.getSelectedItem().toString());
+				    	  addHakedis.setYirmiSekizM(labelFM28.getText());
+				    	  
+				    	  addHakedis.setYirmiDokuz(comboBox29.getSelectedItem().toString());
+				    	  addHakedis.setYirmiDokuzM(labelFM29.getText());
+				    	  
+				    	  addHakedis.setOtuz(comboBox30.getSelectedItem().toString());
+				    	  addHakedis.setOtuzM(labelFM30.getText());
+				    	  
+				    	  addHakedis.setOtuzBir(comboBox31.getSelectedItem().toString());
+				    	  addHakedis.setOtuzBirM(labelFM31.getText());
+
+
+				    	  if(Integer.parseInt(labelTatilGunuCalismaSay.getText().toString())<10) 
+				    	  {addHakedis.setTopMesai("0"+labelTatilGunuCalismaSay.getText().toString());}				    	 
+				    	  else{addHakedis.setTopMesai(labelTatilGunuCalismaSay.getText().toString());}				    	  
+				    	  				    	
+				    	  addHakedis.setUcretVerGun(labelMaasHesaplacakGunSay.getText().toString());
+				    	  addHakedis.setYolUVerGun(labelYolUcretiVerilecekGunSay.getText().toString());
+				    	  addHakedis.setYemekUVerGun(labelYemekUcretiVerGunSay.getText().toString());
+				    	  
+				    	  
+				    	  
+				    	  AylikHakedisSQL.hakEdisEkle(addHakedis);	
+				    	  
+				    	  JOptionPane.showMessageDialog(null,"Kayit Basarili");																									    																			
+				      }						
+					 catch (Exception e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(null,"Baglanti Hatasi");								
+					}													
+							
+				
+				}
+							
+							
+				      list1.setListData((AylikHakedisSQL.hakEdisListeleSicil(mudurlukAl,String.valueOf(ay),String.valueOf(yil))).toArray());
+							
+					
+				}
+			});
+			
 			
 			//günleri aldýðým bölüm, günleri labele atýyoruz..
 			btnNewButton_1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
+					try {
 					
 					
 					
@@ -1937,13 +3189,15 @@ public class MudurlukPanel extends JFrame {
 		    	    
 		    	    
 		    	    labelTarihYaz.setText(labelIsim.getText().toString()+"-"+secilenTarihYilAl+"-"+secilenTarihAyAl+".ay");
+		    	   
 		    	    
 		    	   
 		    	    if(ay==4||ay==6||ay==9||ay==11) {		    	    	
 		    	    	comboBox31.setVisible(false);
 		    	    	label31.setVisible(false);
 		    	    	
-		    	    	comboBox31.setSelectedItem("Gelmedi.Gorevde.Yok");
+		    	    	comboBox31.setSelectedItem("Seciniz");
+		    	    
 		    	    }
 		    	    else if(ay==2) {	    	    	
 		    	    	if(yil%4==0) {		    	    		
@@ -1952,8 +3206,8 @@ public class MudurlukPanel extends JFrame {
 			    	    	comboBox30.setVisible(false);
 			    	    	label30.setVisible(false);	
 			    	    	
-			    	    	comboBox31.setSelectedItem("Gelmedi.Gorevde.Yok");
-			    	    	comboBox30.setSelectedItem("Gelmedi.Gorevde.Yok");
+			    	    	comboBox31.setSelectedItem("Seciniz");
+			    	    	comboBox30.setSelectedItem("Seciniz");
 			    	    	
 		    	    	}
 		    	    	else {
@@ -1964,9 +3218,10 @@ public class MudurlukPanel extends JFrame {
 			    	    	comboBox29.setVisible(false);
 			    	    	label29.setVisible(false);
 			    	    	
-			    	    	comboBox31.setSelectedItem("Gelmedi.Gorevde.Yok");
-			    	    	comboBox30.setSelectedItem("Gelmedi.Gorevde.Yok");
-			    	    	comboBox29.setSelectedItem("Gelmedi.Gorevde.Yok");
+			    	    	comboBox31.setSelectedItem("Seciniz");
+			    	    	comboBox30.setSelectedItem("Seciniz");
+			    	    	comboBox29.setSelectedItem("Seciniz");
+			    	    	
 		    	    	}		    	    	
 		    	    }		    	    
 		    	    else if (ay==1||ay==3||ay==5||ay==7||ay==8||ay==10||ay==12){
@@ -1981,6 +3236,7 @@ public class MudurlukPanel extends JFrame {
 		    	    	comboBox29.setSelectedItem("Gorevde");
 		    	    	comboBox30.setSelectedItem("Gorevde");
 		    	    	comboBox31.setSelectedItem("Gorevde");
+		    	    	;
 		    	    }
 		    	    
 		    	  
@@ -1993,6 +3249,7 @@ public class MudurlukPanel extends JFrame {
 		    	    	panel_3.setVisible(true);
 		    	    	panel_4.setVisible(true);
 		    	    	panel.setVisible(true);
+		    	    	panel_5.setVisible(true);
 		    	    	
 		    	    	
 		    	    	String gun = null;
@@ -2045,8 +3302,15 @@ public class MudurlukPanel extends JFrame {
 		    	    if(labelGun5.getText().toString().equals("Pazar")) {labelGun5.setForeground(new Color(128, 0, 0));}else{labelGun5.setForeground(Color.BLACK);}
 		    	    if(labelGun6.getText().toString().equals("Pazar")) {labelGun6.setForeground(new Color(128, 0, 0));}else{labelGun6.setForeground(Color.BLACK);}
 		    	    if(labelGun7.getText().toString().equals("Pazar")) {labelGun7.setForeground(new Color(128, 0, 0));}else{labelGun7.setForeground(Color.BLACK);}
+		    	   
 		    	    
+					}catch(Exception e2){//e2.printStackTrace();
+					JOptionPane.showMessageDialog(null,"Personelinizi Kontrol Edip Tarih Seciniz");
+					}
 				}
+					
+				
+			
 			});
 			
 			
@@ -2063,10 +3327,44 @@ public class MudurlukPanel extends JFrame {
 					labelUnvan.setText(unvan);
 					labelIsim.setText(adiSoyadi);
 															
-					labelTarihYaz.setText(labelIsim.getText().toString()+"-"+secilenTarihYilAl+"-"+secilenTarihAyAl+".ay");
+					labelTarihYaz.setText(mudurlukAl+"          "+labelIsim.getText().toString()+"     "+secilenTarihYilAl+"   "+secilenTarihAyAl+".ay");
 				}
 			});
 			
+			btnTmnOnayla_1_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					
+					AylikHakEdisDomain silinecekHakEdisDomain =(AylikHakEdisDomain)list1.getSelectedValue();
+					if(silinecekHakEdisDomain!=null) {
+						int n=JOptionPane.showConfirmDialog(null,silinecekHakEdisDomain.getSicil()+ "Sicile Ait Secilen Veri Silinecek.","UYARI !!", JOptionPane.YES_NO_OPTION);
+						if(n==0) {
+							
+							AylikHakedisSQL.hakEdisSil(silinecekHakEdisDomain);
+							
+					
+							
+							list1.setListData((AylikHakedisSQL.hakEdisListeleSicil(mudurlukAl,String.valueOf(ay),String.valueOf(yil))).toArray());
+							
+							JOptionPane.showMessageDialog(null,silinecekHakEdisDomain.getSicil()+" siciline ait kayit silindi");
+										
+						}
+						else {						
+							}					
+					}	
+					else {JOptionPane.showMessageDialog(null," Silinecek Kaydi Seciniz.");}
+					
+					
+					
+				}
+			});
+			
+			PersonelUI.MudurlukveSicilGetir(sicilAl,mudurlukAl);
+	}
+	
+	public static void MudurlukveSicilGetir(String sicil,String mudurluk) {
 		
+		sicilAl=sicil;
+		mudurlukAl=mudurluk;
 	}
 }

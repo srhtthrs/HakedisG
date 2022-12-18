@@ -9,11 +9,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
+import HakEdisDatabase.UyelikDataBaseSQL;
 import HakEdisDomain.Degiskenler;
+import HakEdisDomain.UyelikDomain;
 
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -23,16 +26,16 @@ import java.awt.event.ActionEvent;
 public class UyeOlUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textFieldSicil;
+	private JTextField textFieldAdiSoyadi;
+	private JTextField textFieldSifre;
 	private JLabel lblAdSoyad;
 	private JLabel lblSifre;
-	private JComboBox comboBox;
+	private JComboBox comboBoxMudurluk;
 	private JLabel lblNewLabel_1;
 	private JLabel lblSifreTekrar;
-	private JTextField textField_3;
-	private JButton btnNewButton;
+	private JTextField textFieldSifreTekrar;
+	private JButton btnGonder;
 	private JButton btnGeri;
 
 	/**
@@ -73,20 +76,20 @@ public class UyeOlUI extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(115, 71, 249, 34);
-		panel.add(textField);
-		textField.setColumns(10);
+		textFieldSicil = new JTextField();
+		textFieldSicil.setBounds(115, 71, 249, 34);
+		panel.add(textFieldSicil);
+		textFieldSicil.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(115, 116, 249, 34);
-		panel.add(textField_1);
+		textFieldAdiSoyadi = new JTextField();
+		textFieldAdiSoyadi.setColumns(10);
+		textFieldAdiSoyadi.setBounds(115, 116, 249, 34);
+		panel.add(textFieldAdiSoyadi);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(115, 204, 249, 34);
-		panel.add(textField_2);
+		textFieldSifre = new JTextField();
+		textFieldSifre.setColumns(10);
+		textFieldSifre.setBounds(115, 204, 249, 34);
+		panel.add(textFieldSifre);
 		
 		JLabel lblNewLabel = new JLabel("Sicil");
 		lblNewLabel.setForeground(Color.WHITE);
@@ -107,10 +110,10 @@ public class UyeOlUI extends JFrame {
 		panel.add(lblSifre);
 		
 		
-		comboBox = new JComboBox(Degiskenler.getMudurlukler());
-		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		comboBox.setBounds(115, 161, 249, 32);
-		panel.add(comboBox);
+		comboBoxMudurluk = new JComboBox(Degiskenler.getMudurlukler());
+		comboBoxMudurluk.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		comboBoxMudurluk.setBounds(115, 161, 249, 32);
+		panel.add(comboBoxMudurluk);
 		
 		lblNewLabel_1 = new JLabel("Mudurluk");
 		lblNewLabel_1.setForeground(Color.WHITE);
@@ -124,21 +127,64 @@ public class UyeOlUI extends JFrame {
 		lblSifreTekrar.setBounds(10, 249, 71, 34);
 		panel.add(lblSifreTekrar);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(115, 249, 249, 34);
-		panel.add(textField_3);
+		textFieldSifreTekrar = new JTextField();
+		textFieldSifreTekrar.setColumns(10);
+		textFieldSifreTekrar.setBounds(115, 249, 249, 34);
+		panel.add(textFieldSifreTekrar);
 		
-		btnNewButton = new JButton("Gonder");
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setBackground(SystemColor.activeCaption);
-		btnNewButton.setBorder(new LineBorder(Color.WHITE));
-		btnNewButton.setBounds(250, 294, 114, 34);
-		panel.add(btnNewButton);
+		btnGonder = new JButton("Gonder");
+		
+		btnGonder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			if(UyelikDataBaseSQL.kullaniciAdiKontrol(textFieldSicil.getText())) 
+				{JOptionPane.showMessageDialog(null,"Kayitli Kullanici");}
+				else{
+					    if(textFieldSicil.getText().equals("")|| 
+					       textFieldSifre.getText().equals("")|| 
+						   textFieldSifreTekrar.getText().equals("")|| 
+						   textFieldAdiSoyadi.getText().equals(""))										
+						{JOptionPane.showMessageDialog(null,"Lütfen Tüm Alanlarý Doldurunuz");}
+					    
+					    else {
+							if(textFieldSifre.getText().equals(textFieldSifreTekrar.getText())){
+						      try {
+						    	  
+						    	  UyelikDomain addUser=new UyelikDomain();
+						    	  
+						    	  addUser.setSicil(textFieldSicil.getText());
+						    	  addUser.setAdiSoyadi(textFieldAdiSoyadi.getText());
+						    	  addUser.setMudurluk(comboBoxMudurluk.getSelectedItem().toString());						    	  
+						    	  addUser.setSifre(textFieldSifre.getText());
+						    	 
+						    	  addUser.setOnayDurumu("onaylanmadi");
+						    	  
+						    	  UyelikDataBaseSQL.uyeEkle(addUser);							
+								  JOptionPane.showMessageDialog(null,"Kayýt Baþarýlý");
+									
+								  UyeOlUI.this.dispose();
+								  LogInUI mPane2sls=new LogInUI();
+								  mPane2sls.setVisible(true);
+									
+									
+						      }						
+							 catch (Exception e2) {
+								e2.printStackTrace();
+								JOptionPane.showMessageDialog(null,"Baglanti Hatasi");}
+						      }						
+						else {JOptionPane.showMessageDialog(null,"Parolayý Kontrol Edin");}		
+			}}}
+		});
+		btnGonder.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnGonder.setForeground(Color.BLACK);
+		btnGonder.setBackground(SystemColor.activeCaption);
+		btnGonder.setBorder(new LineBorder(Color.WHITE));
+		btnGonder.setBounds(250, 294, 114, 34);
+		panel.add(btnGonder);
 		
 		btnGeri = new JButton("Geri");
 		btnGeri.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnGeri.setForeground(Color.WHITE);
+		btnGeri.setForeground(Color.BLACK);
 		btnGeri.setBorder(new LineBorder(new Color(255, 255, 255)));
 		btnGeri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
