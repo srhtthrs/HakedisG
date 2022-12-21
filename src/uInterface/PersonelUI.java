@@ -167,7 +167,7 @@ public class PersonelUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				PersonelUI.this.dispose();
-				MudurlukPanel mPane2sl=new MudurlukPanel();
+				MudurlukPanel2 mPane2sl=new MudurlukPanel2();
 				mPane2sl.setVisible(true);
 			}
 		});

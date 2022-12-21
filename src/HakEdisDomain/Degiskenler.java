@@ -159,6 +159,20 @@ public class Degiskenler {
 			"ZEYTÝNBURNU PTT MÜDÜRLÜÐÜ", 
 			"ZÜMRÜTEVLER PTT MÜDÜRLÜÐÜ"};
 
+	
+	static String[] calismaGunleri= {"X","HT","RT","II","R2A","R2U","YI","OI","BI","EI","G","DI","C","SM","GM","YG","UI"};
+	
+	
+	
+
+	public static String[] getCalismaGunleri() {
+		return calismaGunleri;
+	}
+
+	public static void setCalismaGunleri(String[] calismaGunleri) {
+		Degiskenler.calismaGunleri = calismaGunleri;
+	}
+
 	public static String[] getMudurlukler() {
 		return mudurlukler;
 	}

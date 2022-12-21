@@ -172,10 +172,10 @@ public class LogInUI extends JFrame {
 				
 				if(UyelikDataBaseSQL.kullaniciGirisKontrol(sicilAl,mudurlukAl,sifreAl,"onaylandi")) {
 				
-				MudurlukPanel.MudurlukveSicilGetir(sicilAl,mudurlukAl);
+				MudurlukPanel2.MudurlukveSicilGetir(sicilAl,mudurlukAl);
 						
 				LogInUI.this.dispose();
-				MudurlukPanel mPane2sls=new MudurlukPanel();
+				MudurlukPanel2 mPane2sls=new MudurlukPanel2();
 				mPane2sls.setVisible(true);
 				}
 				else {
